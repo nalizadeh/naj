@@ -198,7 +198,8 @@ public class JTreeTableModel extends AbstractTableModel {
 	 */
 	@Override
 	public Object getValueAt(int row, int column) {
-		return treetable.getNodeAtRow(row).getValue(translateColumn(column));
+		JTreeTableNode node = treetable.getNodeAtRow(row);
+		return node == null ? null : node.getValue(translateColumn(column));
 	}
 
 	/**

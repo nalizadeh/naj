@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema 
+    targetNamespace='http://ec.europa.eu/eessi/ns/4_2/XSec'
+	elementFormDefault='unqualified'
+    version='4.2.0' xmlns:CC='http://ec.europa.eu/eessi/ns/4_2/CC'
+    xmlns:XSec='http://ec.europa.eu/eessi/ns/4_2/XSec'
+    xmlns:ccts='urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2' 
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.0">
+
+	<xsd:annotation>
+		<xsd:appinfo>
+		   <jaxb:schemaBindings>
+				<jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/>
+			</jaxb:schemaBindings>
+		 </xsd:appinfo>
+	</xsd:annotation>
+
+    <xsd:import namespace='http://ec.europa.eu/eessi/ns/4_2/CC' schemaLocation='CC-4.2.xsd'/>
+    <xsd:complexType name='XReimbursementContextType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>74C36ECF-B2B7-E611-80D2-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.Administrative</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='reimbursementRequestID' type='CC:EESSICRUniqueidentifierType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>76C36ECF-B2B7-E611-80D2-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='totalNumberIndividualClaims' type='CC:EESSICRIndividualClaimsCountType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>75C36ECF-B2B7-E611-80D2-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='XAdministrativeContextType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>C959F129-6C6F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.Administrative</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element maxOccurs='1' minOccurs='1'
+                    name='PersonContext' type='CC:EESSIPersonValidationType'>
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang='en'>
+                            <ccts:DictionaryEntryName>E2984042-6A6F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs='1' minOccurs='1'
+                    name='EmployerContext' type='CC:EESSIOrganisationType'>
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang='en'>
+                            <ccts:DictionaryEntryName>E3984042-6A6F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                            <ccts:Definition>An organisation in this context can include a large variety of entities or persons having a status, rights and obligations defined by law. It can include for example: employers, self-employed persons etc.</ccts:Definition>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs='1' minOccurs='1'
+                    name='ReimbursementContext' type='XSec:XReimbursementContextType'>
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang='en'>
+                            <ccts:DictionaryEntryName>E4984042-6A6F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='XReminderType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>BC942402-A5FA-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.Administrative.ENUM</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue>
+                    <CodeListEntry>
+                        <ccts:UniqueID>62EBFA08-A5FA-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                        <value>01</value>
+                        <definition>Document</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>63EBFA08-A5FA-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                        <value>02</value>
+                        <definition>Information</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>5A66AA0F-A5FA-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                        <value>03</value>
+                        <definition>SED</definition>
+                    </CodeListEntry>
+                </ccts:OfficialConstraintContextValue>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1' name='value'>
+                <xsd:simpleType>
+                    <xsd:restriction base='xsd:string'>
+                        <xsd:pattern value='(01|02|03){1}'/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

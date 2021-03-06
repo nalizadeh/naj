@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="example"
+	xmlns:add="addressNamespace">
+	<!-- Embedded bindings
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.0"
+	-->
+	
+    <xs:import namespace="addressNamespace" schemaLocation="address.xsd"/>
+
+    <xs:element name="customer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="first-name" type="xs:string"/>
+				<xs:element name="last-name" type="xs:string"/>
+				<xs:element name="address" type="add:address"/>
+			</xs:sequence>
+		</xs:complexType>
+    </xs:element>
+
+<!-- Embedded bindings
+
+	<xs:annotation>
+		<xs:appinfo>
+		   <jaxb:schemaBindings>
+				<jaxb:package name="org.naj.java.xml.jaxb"/>
+			</jaxb:schemaBindings>
+	 
+			<jaxb:bindings node="//xs:element[@name='customer']/xs:complexType">
+				<jaxb:bindings node=".//xs:element[@name='first-name']">
+					<jaxb:property name="last-name-comma-first-name"/>
+				</jaxb:bindings>
+			</jaxb:bindings>
+		 </xs:appinfo>
+	</xs:annotation>
+-->
+
+</xs:schema>

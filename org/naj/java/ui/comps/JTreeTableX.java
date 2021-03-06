@@ -76,6 +76,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
@@ -509,8 +510,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		headerMenuButton.setBackground(H_BUTTON_BGC);
 		headerMenuButton.setOpaque(true);
 		headerMenuButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		headerMenuButton.addMouseListener(mouseAdapter);
 		headerMenuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		headerMenuButton.addMouseListener(mouseAdapter);
 
 		expandButton = new JButton(expandAction);
 		expandButton.setContentAreaFilled(false);
@@ -518,9 +519,9 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		expandButton.setBackground(H_BUTTON_BGC);
 		expandButton.setOpaque(true);
 		expandButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		expandButton.addMouseListener(mouseAdapter);
-		expandButton.setEnabled(false);
 		expandButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		expandButton.setEnabled(false);
+		expandButton.addMouseListener(mouseAdapter);
 
 		collapseButton = new JButton(collapseAction);
 		collapseButton.setContentAreaFilled(false);
@@ -528,11 +529,24 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		collapseButton.setBackground(H_BUTTON_BGC);
 		collapseButton.setOpaque(true);
 		collapseButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		collapseButton.addMouseListener(mouseAdapter);
-		collapseButton.setEnabled(false);
 		collapseButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		collapseButton.setEnabled(false);
+		collapseButton.addMouseListener(mouseAdapter);
 
 		contextMenu = new TreeTableContextMenu(this);
+	}
+
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public void init() {
+		init((TreeTableNode) null);
 	}
 
 	/**
@@ -560,7 +574,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	 */
 	public void init(TreeTableNode root) {
 		tree.init(root);
-		postUpdate(root == null ? 0 : root.myChilds.size(), columnNames.length);
+		postUpdate(root == null || !root.hasChild() ? 0 : root.myChildren.size(), columnNames.length);
 	}
 
 	/**
@@ -588,7 +602,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	 */
 	public void update(TreeTableNode root, boolean setRoot) {
 		tree.update(root, setRoot);
-		postUpdate(root == null ? 0 : root.myChilds.size(), columnNames.length);
+		postUpdate(root == null ? 0 : root.hasChild() ? root.myChildren.size() : 0, columnNames.length);
 	}
 
 	/**
@@ -1597,18 +1611,39 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	 * @see
 	 */
 	public int search(String text) {
+		return search(text, true);
+	}
+
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public int search(String text, boolean caseSensitive) {
+		return searchNodes(text, caseSensitive).size();
+	}
+
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public List<TreeTableNode> searchNodes(String text, boolean caseSensitive) {
+		List<TreeTableNode> rows = new ArrayList<>();
 		if (text != null && !text.isEmpty()) {
-
-			List<TreeTableNode> rows = new ArrayList<TreeTableNode>();
-
-			tree.search(text, rows);
+			tree.search(text, rows, caseSensitive);
 			tree.select(rows);
-
 			scrollSelectionToVisible();
-
-			return rows.size();
 		}
-		return 0;
+		return rows;
 	}
 
 	/**
@@ -1691,9 +1726,9 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	 *
 	 * @see
 	 */
-	public void nodeActionPerformed(String name, Object args) {
+	public void nodeActionPerformed(String name, Object args, Component comp) {
 		for (TreeTableListener ls : treeTablelisteners) {
-			ls.nodeActionPerformed(name, args);
+			ls.nodeActionPerformed(name, args, comp);
 		}
 	}
 
@@ -1759,7 +1794,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 		void nodesDeselected();
 
-		void nodeActionPerformed(String name, Object args);
+		void nodeActionPerformed(String name, Object args, Component comp);
 
 		void nodeCheckChanged(TreeTableNode node);
 	}
@@ -1778,7 +1813,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		}
 
 		@Override
-		public void nodeActionPerformed(String name, Object args) {
+		public void nodeActionPerformed(String name, Object args, Component comp) {
 		}
 
 		@Override
@@ -1919,7 +1954,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		@Override
 		public Object getValueAt(int row, int column) {
-			return tree.getNodeAtRow(row).getValue(translateColumn(column));
+			TreeTableNode node = tree.getNodeAtRow(row);
+			return node == null ? null : node.getValue(translateColumn(column));
 		}
 
 		/**
@@ -2147,8 +2183,11 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 			TreeTableNode node = tree.getNodeAtRow(row);
 
-			Color fg = table.getForeground();
-			Color bg = table.getBackground();
+			Color fg = node.getForegroundColor(row, column);
+			Color bg = node.getBackgroundColor(row, column);
+			
+			if (fg == null) fg = table.getForeground();
+			if (bg == null) bg = table.getBackground();
 
 			if (isSelected) {
 				fg = table.getSelectionForeground();
@@ -2201,8 +2240,13 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			EditorComponent editor = model.getEditorAt(node, row, col);
 			if (editor != null && node.isEditable(row, col)) {
 				return
-					editor.getRendererComponent(table, value, isSelected, //
-						model.isCellEnabled(row, column), fg, bg
+					editor.getRendererComponent(
+						table,
+						value,
+						isSelected, //
+						model.isCellEnabled(row, column),
+						fg,
+						bg
 					);
 
 			}
@@ -2222,9 +2266,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			}
 
 			// Rest of columns
+			Font fo = node.getFont(row, column);
 			setForeground(fg);
 			setBackground(bg);
-			setFont(TT_FONT1);
+			setFont(fo == null ? TT_FONT1 : fo);
 			setHorizontalAlignment(node.getHorizontalAlignment(row, column));
 			setVerticalAlignment(node.getVerticalAlignment(row, column));
 
@@ -2384,17 +2429,31 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		) {
 			super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
+			Font font = null;
 			TreeTableNode node = ((TreeTableTree) tree).getNodeAtRow(row);
 			if (node != null) {
 				setText(node.getNodeName());
 				setIcon(tree, value, leaf, node.getIcon());
+
+				font = node.getFont(row, 0);
+
+				Color fg = node.getForegroundColor(row, 0);
+				Color bg = node.getBackgroundColor(row, 0);		
+				
+				if (fg == null) fg = ((TreeTableTree) tree).getForeground();
+				if (bg == null) bg = ((TreeTableTree) tree).getBackground();
+
+				setForeground(fg);
+				setBackground(bg);
 			}
 
-			setFont(TT_FONT1);
+			setFont(font == null ? TT_FONT1 : font);
 
 			if (selected) {
 				setTextSelectionColor(getSelectionForeground());
 				setBackgroundSelectionColor(getSelectionBackground());
+				setForeground(getSelectionForeground());
+				setBackground(getSelectionBackground());
 			} else {
 				Color c1 =
 					showRollover && bodyRolloverIndex == row ? ROLLOVER_COLOR
@@ -2524,8 +2583,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 			Border outside = lb.getBorder();
 			Border inside = BorderFactory.createEmptyBorder(0, 0, 0, p);
-			Border b = BorderFactory.createCompoundBorder(outside, inside);
-			lb.setBorder(b);
+			lb.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
 			return lb;
 		}
@@ -2583,6 +2641,11 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		}
 
 		@Override
+		public void mouseEntered(MouseEvent e) {
+			headerRolloverIndex = convertColumnIndexToModel(getColumnModel().getColumnIndexAtX(e.getX()));
+		}
+
+		@Override
 		public void mouseExited(MouseEvent e) {
 			headerRolloverIndex = -1;
 		}
@@ -2620,6 +2683,13 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	//=====================================================================
 
 	private class TreeTableMouseListener extends MouseAdapter {
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (e.isControlDown()) {
+				clearSelection();
+			}
+		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
@@ -2711,8 +2781,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 				filters.add(key.toString());
 			}
 		}
-		for (TreeTableNode child : node.myChilds) {
-			getFilterNodes(child, column, filters);
+		if (node.hasChild()) {
+			for (TreeTableNode child : node.myChildren) {
+				getFilterNodes(child, column, filters);
+			}
 		}
 	}
 
@@ -2780,7 +2852,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 						}
 					} else if (node.isChecked()) {
 						btOk.setEnabled(true);
-					} else if (self.tree.getCheckedCount() > 0) {
+					} else if (self.getCheckedCount() > 0) {
 						btOk.setEnabled(true);
 					}
 				}
@@ -3094,6 +3166,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		private TreeTablePopupAction columnsConfAction;
 		private TreeTablePopupAction copyAction;
 		private TreeTablePopupAction pasteAction;
+		private TreeTablePopupAction copyRowAction;
+		private TreeTablePopupAction pasteRowAction;
+		private TreeTablePopupAction copyColAction;
+		private TreeTablePopupAction pasteColAction;
 
 		public TreeTableContextMenu(JTreeTableX table) {
 			this.table = table;
@@ -3160,7 +3236,11 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						copySelectedData(table);
+						if (menuEvent != null) {
+							int evRow = table.rowAtPoint(menuEvent.getPoint());
+					        int evCol = table.columnAtPoint(menuEvent.getPoint());
+							table.copySelectedData(table, evRow, evCol);
+						}
 					}
 				};
 
@@ -3170,10 +3250,52 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						pasteSelectedData(table);
+						if (menuEvent != null) {
+							int evRow = table.rowAtPoint(menuEvent.getPoint());
+					        int evCol = table.columnAtPoint(menuEvent.getPoint());
+					        table.pasteSelectedData(table, evRow, evCol);
+						}
 					}
 				};
 
+			copyRowAction =
+				new TreeTablePopupAction("Zeile kopieren", TT_COP_ICON, "Zeile kopieren", new Integer(KeyEvent.VK_C)) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						table.copySelectedData(table, -1, -1);
+					}
+				};
+
+			pasteRowAction =
+				new TreeTablePopupAction("Zeile einfügen", TT_PAS_ICON, "Zeile einfügen", new Integer(KeyEvent.VK_V)) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						table.pasteSelectedData(table, -1, -1);
+					}
+				};
+						
+			copyColAction =
+				new TreeTablePopupAction("Spalte kopieren", TT_COP_ICON, "Spalte kopieren", new Integer(KeyEvent.VK_C)) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					}
+				};
+
+			pasteColAction =
+				new TreeTablePopupAction("Spalte einfügen", TT_PAS_ICON, "Spalte einfügen", new Integer(KeyEvent.VK_V)) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					}
+				};
+				
 			ActionListener keyListener =
 				new ActionListener() {
 					@Override
@@ -3193,12 +3315,26 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			table.registerKeyboardAction(keyListener, "Copy", copy, JComponent.WHEN_FOCUSED);
 			table.registerKeyboardAction(keyListener, "Paste", paste, JComponent.WHEN_FOCUSED);
 
+			copyColAction.setEnabled(false);
+			pasteColAction.setEnabled(false);
+
+			JMenu copyMenu = new JMenu("Kopieren");
+			copyMenu.add(copyAction);
+			copyMenu.add(copyRowAction);
+			copyMenu.add(copyColAction);
+			
+			JMenu pasteMenu = new JMenu("Einfügen");
+			pasteMenu.add(pasteAction);
+			pasteMenu.add(pasteRowAction);
+			pasteMenu.add(pasteColAction);
+			
 			add(expandAction);
 			add(collapseAction);
 			add(showDetailsAction);
 			addSeparator();
-			add(copyAction);
-			add(pasteAction);
+			
+			add(copyMenu);
+			add(pasteMenu);
 			addSeparator();
 			add(columnsConfAction);
 		}
@@ -3364,7 +3500,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					copySelectedData(table);
+					copySelectedData(table, -1, -1);
 				}
 			}
 		);
@@ -3395,40 +3531,46 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 	/**
 	 * @param   table
+	 * @param   row
+	 * @param   col
 	 *
 	 * @return  StringBuffer
 	 */
-	private static void copySelectedData(JTable table) {
+	private void copySelectedData(JTable table, int row, int col) {
 
 		StringBuffer sbf = new StringBuffer();
 
 		try {
-			int numcols = table.getSelectedColumnCount();
-			int numrows = table.getSelectedRowCount();
-			int[] rowsselected = table.getSelectedRows();
-			int[] colsselected = table.getSelectedColumns();
-
-			if (!table.getColumnModel().getColumnSelectionAllowed()) {
-				numcols = table.getColumnCount();
-				colsselected = new int[numcols];
-				for (int n = 0; n < table.getColumnCount(); n++) {
-					colsselected[n] = n;
-				}
+			if (row != -1 && col != -1) {
+				sbf.append(table.getValueAt(row, col));				
 			}
-
-			for (int i = 0; i < numrows; i++) {
-				for (int j = 0; j < numcols; j++) {
-					sbf.append(table.getValueAt(rowsselected[i], colsselected[j]));
-					if (j < numcols - 1) {
-						sbf.append("\t");
+			else {
+				int numcols = table.getSelectedColumnCount();
+				int numrows = table.getSelectedRowCount();
+				int[] rowsselected = table.getSelectedRows();
+				int[] colsselected = table.getSelectedColumns();
+	
+				if (!table.getColumnModel().getColumnSelectionAllowed()) {
+					numcols = table.getColumnCount();
+					colsselected = new int[numcols];
+					for (int n = 0; n < table.getColumnCount(); n++) {
+						colsselected[n] = n;
 					}
 				}
-				sbf.append("\n");
+	
+				for (int i = 0; i < numrows; i++) {
+					for (int j = 0; j < numcols; j++) {
+						sbf.append(table.getValueAt(rowsselected[i], colsselected[j]));
+						if (j < numcols - 1) {
+							sbf.append("\t");
+						}
+					}
+					sbf.append("\n");
+				}
 			}
-
 			StringSelection stsel = new StringSelection(sbf.toString());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stsel, stsel);
-
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -3436,12 +3578,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 	/**
 	 * @param  table
-	 * @param  data
+	 * @param  row
+	 * @param  col
 	 */
-	private static void pasteSelectedData(JTable table) {
-
-		int startRow = (table.getSelectedRows())[0];
-		int startCol = table.getColumnModel().getColumnSelectionAllowed() ? (table.getSelectedColumns())[0] : 0;
+	private void pasteSelectedData(JTable table, int row, int col) {
 		try {
 			String data =
 				(String) (
@@ -3451,14 +3591,21 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 						.getContents(table)
 						.getTransferData(DataFlavor.stringFlavor)
 				);
-			StringTokenizer st1 = new StringTokenizer(data, "\n");
-			for (int i = 0; st1.hasMoreTokens(); i++) {
-				String rowstring = st1.nextToken();
-				StringTokenizer st2 = new StringTokenizer(rowstring, "\t");
-				for (int j = 0; st2.hasMoreTokens(); j++) {
-					String value = (String) st2.nextToken();
-					if (startRow + i < table.getRowCount() && startCol + j < table.getColumnCount()) {
-						table.setValueAt(value, startRow + i, startCol + j);
+			if (row != -1 && col != -1) {
+				table.setValueAt(data, row, col);  // TODO
+			}
+			else {
+				int startRow = (table.getSelectedRows())[0];
+				int startCol = table.getColumnModel().getColumnSelectionAllowed() ? (table.getSelectedColumns())[0] : 0;
+				StringTokenizer st1 = new StringTokenizer(data, "\n");
+				for (int i = 0; st1.hasMoreTokens(); i++) {
+					String rowstring = st1.nextToken();
+					StringTokenizer st2 = new StringTokenizer(rowstring, "\t");
+					for (int j = 0; st2.hasMoreTokens(); j++) {
+						String value = (String) st2.nextToken();
+						if (startRow + i < table.getRowCount() && startCol + j < table.getColumnCount()) {
+							table.setValueAt(value, startRow + i, startCol + j);  // TODO
+						}
 					}
 				}
 			}
@@ -3480,8 +3627,6 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		private DefaultTreeModel model;
 		private int paintingRow;
 
-		private List<TreeTableNode> lastSelection;
-
 		/**
 		 * @param
 		 *
@@ -3495,7 +3640,6 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			this.originRoot = new TreeTableNode();
 			this.originRoot.setNodeParent(null);
 			this.model = new DefaultTreeModel(originRoot);
-			this.lastSelection = new ArrayList<TreeTableNode>();
 
 			setModel(model);
 			setEditable(false);
@@ -3535,7 +3679,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		private void init(List<? extends TreeTableNode> nodes) {
 			clear();
-			originRoot.initChilds(nodes);
+			originRoot.initChildren(nodes);
 			prepareData();
 		}
 
@@ -3549,7 +3693,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		private void update(List<? extends TreeTableNode> nodes) {
-			originRoot.updateChilds(nodes);
+			originRoot.updateChildren(nodes);
 			prepareData();
 		}
 
@@ -3564,7 +3708,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		private void update(TreeTableNode rootNode, boolean setRoot) {
 			if (setRoot) {
-				this.originRoot = rootNode;
+				originRoot = rootNode;
 			} else {
 				clear();
 				originRoot.addChild(rootNode);
@@ -3608,11 +3752,6 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 
 			model.setRoot(root);
 
-			if (lastSelection != null) {
-				root.select(this, lastSelection);
-				lastSelection.clear();
-			}
-
 			reload();
 		}
 
@@ -3626,13 +3765,6 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		private void clear() {
-			lastSelection.clear();
-			TreeTableNode[] nodes = getSelectedNodes();
-			if (nodes != null) {
-				for (TreeTableNode node : nodes) {
-					lastSelection.add(node);
-				}
-			}
 			originRoot.clear(true);
 			model.setRoot(originRoot);
 			reload();
@@ -3688,8 +3820,13 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		private void sort(Comparator<Object> comparator, int columnIndex, int sortDirection) {
 
-			TreeTableNode node = getSelectedNode();
-			TreePath path = node == null ? null : new TreePath(node.getPath());
+			List<TreeTableNode> lastSelection = new ArrayList<TreeTableNode>();
+			TreeTableNode[] nodes = getSelectedNodes();
+			if (nodes != null) {
+				for (TreeTableNode node : nodes) {
+					lastSelection.add(node);
+				}
+			}
 
 			Enumeration<TreePath> expandeds = getExpandedDescendants(new TreePath(root));
 			List<TreeNode> checkeds = getCheckedItems();
@@ -3707,10 +3844,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 				expandPath((TreePath) expandeds.nextElement());
 			}
 
-			// select the last selected row
-			if (path != null) {
-				setSelectionPath(path);
-			}
+			// select the last selected rows
+			root.select(this, lastSelection);
 
 			// check all last checkeds
 			if (checkeds != null && !checkeds.isEmpty()) {
@@ -3779,8 +3914,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 				filteredNode = node.cloneNode(false);
 			}
 
-			if (filteredNode != null) {
-				for (TreeTableNode o : node.myChilds) {
+			if (filteredNode != null && node.hasChild()) {
+				for (TreeTableNode o : node.myChildren) {
 					TreeTableNode cn = doFilter(o, columnIndex, fdata);
 					if (cn != null) {
 						filteredNode.addChild(cn);
@@ -4094,8 +4229,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		private void search(String text, List<TreeTableNode> rows) {
-			root.search(text, rows);
+		private void search(String text, List<TreeTableNode> rows, boolean caseSensitive) {
+			root.search(text, rows, caseSensitive);
 		}
 
 		/**
@@ -4186,7 +4321,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		private String myName;
 		private int myLevel;
 		private TreeTableNode myParent;
-		private List<TreeTableNode> myChilds;
+		private List<TreeTableNode> myChildren;
 		private boolean selected;
 		private int checkState;
 
@@ -4205,7 +4340,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			this.myKey = null;
 			this.myName = null;
 			this.myLevel = 0;
-			this.myChilds = new ArrayList<TreeTableNode>();
+			this.myChildren = null;
 			this.selected = false;
 			this.checkState = CheckboxTree.NOT_SELECTED;
 		}
@@ -4299,7 +4434,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void getKeyPaths(List<String> keys) {
 			if (hasChild()) {
-				for (TreeTableNode o : myChilds) {
+				for (TreeTableNode o : myChildren) {
 					o.getKeyPaths(keys);
 				}
 			} else {
@@ -4334,8 +4469,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			this.myKey = parent == null ? "root" : createNodeKey();
 			this.myName = parent == null ? "root" : createNodeName();
 			this.myLevel = parent == null ? 0 : parent.myLevel + 1;
-			for (TreeTableNode node : myChilds) {
-				node.setNodeParent(this);
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.setNodeParent(this);
+				}
 			}
 		}
 
@@ -4375,18 +4512,21 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		public TreeTableNode getNodeByName(String name, boolean caseSensitive) {
+			String nm = getNodeName();
 			if (caseSensitive) {
-				if (getNodeName().equals(name)) {
+				if (name.equals(nm)) {
 					return this;
 				}
-			} else if (getNodeName().toLowerCase().equals(name.toLowerCase())) {
+			} else if (nm.toLowerCase().equals(name.toLowerCase())) {
 				return this;
 			}
 
-			for (TreeTableNode node : myChilds) {
-				TreeTableNode n = node.getNodeByName(name, caseSensitive);
-				if (n != null) {
-					return n;
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					TreeTableNode n = node.getNodeByName(name, caseSensitive);
+					if (n != null) {
+						return n;
+					}
 				}
 			}
 			return null;
@@ -4405,10 +4545,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			if (getNodeKey().equals(key)) {
 				return this;
 			}
-			for (TreeTableNode node : myChilds) {
-				TreeTableNode n = node.getNodeByKey(key);
-				if (n != null) {
-					return n;
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					TreeTableNode n = node.getNodeByKey(key);
+					if (n != null) {
+						return n;
+					}
 				}
 			}
 			return null;
@@ -4430,10 +4572,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			if (k1.equals(k2)) {
 				return this;
 			}
-			for (TreeTableNode node : myChilds) {
-				TreeTableNode n = node.getNodeByKeyParts(kpos1, kpos2, key);
-				if (n != null) {
-					return n;
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					TreeTableNode n = node.getNodeByKeyParts(kpos1, kpos2, key);
+					if (n != null) {
+						return n;
+					}
 				}
 			}
 			return null;
@@ -4448,7 +4592,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		private void initChilds(List<? extends TreeTableNode> nodes) {
+		private void initChildren(List<? extends TreeTableNode> nodes) {
 			if (nodes != null && !nodes.isEmpty()) {
 				clear(true);
 				for (TreeTableNode node : nodes) {
@@ -4466,7 +4610,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		private void updateChilds(List<? extends TreeTableNode> nodes) {
+		private void updateChildren(List<? extends TreeTableNode> nodes) {
 			if (nodes != null) {
 				clear(false);
 				for (TreeTableNode node : nodes) {
@@ -4485,7 +4629,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		public boolean hasChild() {
-			return !myChilds.isEmpty();
+			return myChildren != null && !myChildren.isEmpty();
 		}
 
 		/**
@@ -4497,8 +4641,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public List<TreeTableNode> getChilds() {
-			return myChilds;
+		public List<TreeTableNode> getChildren() {
+			return myChildren;
 		}
 
 		/**
@@ -4524,17 +4668,19 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		public TreeTableNode getChild(String name, boolean caseSensitive) {
-			for (TreeTableNode node : myChilds) {
-				if (node.getNodeName() == null) {
-					return null;
-				}
-				if (caseSensitive) {
-					if (node.getNodeName().equals(name)) {
-						return node;
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					if (node.getNodeName() == null) {
+						return null;
 					}
-				} else {
-					if (node.getNodeName().toLowerCase().equals(name.toLowerCase())) {
-						return node;
+					if (caseSensitive) {
+						if (node.getNodeName().equals(name)) {
+							return node;
+						}
+					} else {
+						if (node.getNodeName().toLowerCase().equals(name.toLowerCase())) {
+							return node;
+						}
 					}
 				}
 			}
@@ -4550,14 +4696,17 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public List<TreeTableNode> getChilds(String name) {
-			List<TreeTableNode> cc = new ArrayList<TreeTableNode>();
-			for (TreeTableNode o : myChilds) {
-				if (o.getNodeName().equals(name)) {
-					cc.add(o);
+		public List<TreeTableNode> getChildren(String name) {
+			if (hasChild()) {
+				List<TreeTableNode> cc = new ArrayList<TreeTableNode>();
+				for (TreeTableNode o : myChildren) {
+					if (o.getNodeName().equals(name)) {
+						cc.add(o);
+					}
 				}
+				return cc;
 			}
-			return cc;
+			return null;
 		}
 
 		/**
@@ -4569,19 +4718,20 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public List<TreeTableNode> getChilds(Class<?> classtype) {
-
-			if (classtype == null) {
-				return myChilds;
-			}
-
-			List<TreeTableNode> cc = new ArrayList<TreeTableNode>();
-			for (TreeTableNode o : myChilds) {
-				if (o.getClass() == classtype) {
-					cc.add(o);
+		public List<TreeTableNode> getChildren(Class<?> classtype) {
+			if (hasChild()) {
+				if (classtype != null) {
+					List<TreeTableNode> cc = new ArrayList<TreeTableNode>();
+					for (TreeTableNode o : myChildren) {
+						if (o.getClass() == classtype) {
+							cc.add(o);
+						}
+					}
+					return cc;
 				}
+				return myChildren;
 			}
-			return cc;
+			return null;
 		}
 
 		/**
@@ -4620,11 +4770,14 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		private void addChild(TreeTableNode child, boolean setParent, boolean multiple) {
+			if (myChildren == null) {
+				myChildren = new ArrayList<TreeTableNode>();
+			}
 			if (multiple || getChild(child.getNodeName()) == null) {
 				if (setParent) {
 					child.setNodeParent(this);
 				}
-				myChilds.add(child);
+				myChildren.add(child);
 				add(child);
 			}
 		}
@@ -4640,7 +4793,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void removeChild(TreeTableNode child) {
 			if (getNodeByName(child.getNodeName()) != null) {
-				myChilds.remove(child);
+				myChildren.remove(child);
 				remove(child);
 			}
 		}
@@ -4657,7 +4810,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		public void removeChild(String name) {
 			TreeTableNode child = getNodeByName(name);
 			if (child != null) {
-				myChilds.remove(child);
+				myChildren.remove(child);
 				remove(child);
 			}
 		}
@@ -4687,16 +4840,19 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public void clear(boolean childsToo) {
-			if (childsToo) {
-				for (TreeTableNode node : myChilds) {
+		public void clear(boolean childrenToo) {
+			if (childrenToo && hasChild()) {
+				for (TreeTableNode node : myChildren) {
 					node.clear(true);
 				}
 			}
 
 			// this must be done here!!
 			removeAllChildren();
-			myChilds.clear();
+
+			if (hasChild()) {
+				myChildren.clear();
+			}
 		}
 
 		/**
@@ -4787,8 +4943,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		private int getDepth(int d) {
 			int dd = d;
-			for (TreeTableNode node : myChilds) {
-				dd = Math.max(dd, node.getDepth(d + 1));
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					dd = Math.max(dd, node.getDepth(d + 1));
+				}
 			}
 			return dd;
 		}
@@ -4804,9 +4962,11 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		private void addToTree() {
 			setUserObject(myName);
-			for (TreeTableNode node : myChilds) {
-				add(node);
-				node.addToTree();
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					add(node);
+					node.addToTree();
+				}
 			}
 		}
 
@@ -5007,10 +5167,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		public void setSelected(boolean selected) {
-			for (TreeTableNode node : myChilds) {
-				node.setSelected(selected);
-			}
 			this.selected = selected;
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.setSelected(selected);
+				}
+			}
 		}
 
 		/**
@@ -5041,10 +5203,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void expand(JTree tree, int level) {
 			tree.expandPath(new TreePath(getPath()));
-			for (TreeTableNode node : myChilds) {
-				if (node.getNodeLevel() < level) {
-					tree.expandPath(new TreePath(node.getPath()));
-					node.expand(tree, level);
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					if (node.getNodeLevel() < level) {
+						tree.expandPath(new TreePath(node.getPath()));
+						node.expand(tree, level);
+					}
 				}
 			}
 		}
@@ -5059,10 +5223,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		public void collapse(JTree tree, int level) {
-			for (TreeTableNode node : myChilds) {
-				node.collapse(tree, level);
-				if (node.getNodeLevel() >= level) {
-					tree.collapsePath(new TreePath(node.getPath()));
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.collapse(tree, level);
+					if (node.getNodeLevel() >= level) {
+						tree.collapsePath(new TreePath(node.getPath()));
+					}
 				}
 			}
 			if (level < 0) {
@@ -5083,36 +5249,39 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void sort(Comparator<Object> comparator, int columnIndex, int sortDirection) {
 
-			// first sort children
-			for (TreeTableNode node : myChilds) {
-				node.sort(comparator, columnIndex, sortDirection);
-			}
+			if (hasChild()) {
 
-			// and now sort myself
-			TreeTableNode[] rows = myChilds.toArray(new TreeTableNode[myChilds.size()]);
+				// first sort children
+				for (TreeTableNode node : myChildren) {
+					node.sort(comparator, columnIndex, sortDirection);
+				}
 
-			for (int i = rows.length; i > 1; i--) {
-				for (int j = 1; j < i; j++) {
-					TreeTableNode r1 = rows[j - 1];
-					TreeTableNode r2 = rows[j];
+				// and now sort myself
+				TreeTableNode[] rows = myChildren.toArray(new TreeTableNode[myChildren.size()]);
 
-					Object o1 = r1.getValues()[columnIndex];
-					Object o2 = r2.getValues()[columnIndex];
-					int co = comparator.compare(o1, o2);
-					if (
-						(sortDirection == SORTDIR_ASCENDING && co > 0)
-						|| (sortDirection == SORTDIR_DESCENDING && co < 0)
-					) {
-						rows[j - 1] = r2;
-						rows[j] = r1;
+				for (int i = rows.length; i > 1; i--) {
+					for (int j = 1; j < i; j++) {
+						TreeTableNode r1 = rows[j - 1];
+						TreeTableNode r2 = rows[j];
+
+						Object o1 = r1.getValues()[columnIndex];
+						Object o2 = r2.getValues()[columnIndex];
+						int co = comparator.compare(o1, o2);
+						if (
+							(sortDirection == SORTDIR_ASCENDING && co > 0)
+							|| (sortDirection == SORTDIR_DESCENDING && co < 0)
+						) {
+							rows[j - 1] = r2;
+							rows[j] = r1;
+						}
 					}
 				}
-			}
 
-			// finally order the child nodes again
-			removeAllChildren();
-			for (int i = 0; i < rows.length; i++) {
-				add(rows[i]);
+				// finally order the child nodes again
+				removeAllChildren();
+				for (int i = 0; i < rows.length; i++) {
+					add(rows[i]);
+				}
 			}
 		}
 
@@ -5125,12 +5294,13 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public void search(Object condition, List<TreeTableNode> results) {
-			for (TreeTableNode node : myChilds) {
-				node.search(condition, results);
+		public void search(Object condition, List<TreeTableNode> results, boolean caseSensitive) {
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.search(condition, results, caseSensitive);
+				}
 			}
-
-			searchData(condition, results);
+			searchData(condition, results, caseSensitive);
 		}
 
 		/**
@@ -5142,11 +5312,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public void searchData(Object condition, List<TreeTableNode> results) {
+		public void searchData(Object condition, List<TreeTableNode> results, boolean sensitive) {
 			Object[] data = getValues();
 			if (data != null) {
 				for (Object o : data) {
-					if (o != null && o.toString().indexOf(condition.toString()) != -1) {
+					String tx = o == null ? "" : sensitive ? o.toString() : o.toString().toLowerCase();
+					if (tx.indexOf(sensitive ? condition.toString() : condition.toString().toLowerCase()) != -1) {
 						results.add(this);
 						break;
 					}
@@ -5212,8 +5383,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public TreeTableNode cloneNode(boolean childsToo) {
-			return cloneToNode(null, childsToo, true, false);
+		public TreeTableNode cloneNode(boolean childrenToo) {
+			return cloneToNode(null, childrenToo, true, false);
 		}
 
 		/**
@@ -5225,8 +5396,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public TreeTableNode cloneToNode(TreeTableNode node, boolean childsToo) {
-			return cloneToNode(node, childsToo, true, false);
+		public TreeTableNode cloneToNode(TreeTableNode node, boolean childrenToo) {
+			return cloneToNode(node, childrenToo, true, false);
 		}
 
 		/**
@@ -5238,8 +5409,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public TreeTableNode cloneToNode(TreeTableNode node, boolean childsToo, boolean newInstance) {
-			return cloneToNode(node, childsToo, newInstance, false);
+		public TreeTableNode cloneToNode(TreeTableNode node, boolean childrenToo, boolean newInstance) {
+			return cloneToNode(node, childrenToo, newInstance, false);
 		}
 
 		/**
@@ -5251,14 +5422,19 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 *
 		 * @see
 		 */
-		public TreeTableNode cloneToNode(TreeTableNode node, boolean childsToo, boolean newInstance, boolean difTypes) {
+		public TreeTableNode cloneToNode(
+			TreeTableNode node,
+			boolean		  childrenToo,
+			boolean		  newInstance,
+			boolean		  difTypes
+		) {
 
 			TreeTableNode newNode = node == null ? instance() : node;
 
 			copyToNode(newNode);
 
-			if (childsToo) {
-				for (TreeTableNode no : myChilds) {
+			if (childrenToo && hasChild()) {
+				for (TreeTableNode no : myChildren) {
 					newNode.addChild(
 						no.cloneToNode(
 							newInstance ? difTypes ? node.instance() : no.instance() : no,
@@ -5329,8 +5505,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void copyToList(List<TreeTableNode> nodes) {
 			nodes.add(this);
-			for (TreeTableNode node : myChilds) {
-				node.copyToList(nodes);
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.copyToList(nodes);
+				}
 			}
 		}
 
@@ -5345,8 +5523,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void copyToMap(Map<Object, TreeTableNode> map) {
 			map.put(getNodeKey(), this);
-			for (TreeTableNode node : myChilds) {
-				node.copyToMap(map);
+			if (hasChild()) {
+				for (TreeTableNode node : myChildren) {
+					node.copyToMap(map);
+				}
 			}
 		}
 
@@ -5374,6 +5554,19 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public Color getBackgroundColor(int row, int column) {
 			return Color.WHITE;
+		}
+
+		/**
+		 * @param
+		 *
+		 * @exception
+		 *
+		 * @return
+		 *
+		 * @see
+		 */
+		public Font getFont(int row, int column) {
+			return null;
 		}
 
 		/**
@@ -5425,9 +5618,12 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 * @see
 		 */
 		private int getNodesCount(TreeTableNode node) {
-			int n = node.myChilds.size();
-			for (TreeTableNode c : node.myChilds) {
-				n += getNodesCount(c);
+			int n = 0;
+			if (hasChild()) {
+				node.myChildren.size();
+				for (TreeTableNode c : node.myChildren) {
+					n += getNodesCount(c);
+				}
 			}
 			return n;
 		}
@@ -5443,7 +5639,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		 */
 		public void print(String prefix) {
 			System.out.println(prefix + " " + myName);
-			for (TreeTableNode node : myChilds) {
+			for (TreeTableNode node : myChildren) {
 				node.print(prefix + "---");
 			}
 		}
@@ -5465,7 +5661,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			String atr = getXmlAttributes();
 			String xml = "<" + myName + (atr == null || atr.isEmpty() ? "" : " " + atr) + ">";
 			if (hasChild()) {
-				for (TreeTableNode node : myChilds) {
+				for (TreeTableNode node : myChildren) {
 					xml += node.toXML();
 				}
 			} else {
@@ -5476,7 +5672,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		}
 
 		/**
-		 * @return  String a="v" b="v",..
+		 * @return  String
 		 */
 		protected String getXmlValue() {
 			return "x";
@@ -5495,6 +5691,10 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 	//###############################################################################
 
 	public interface RendererComponent {
+
+		public Object getRendererValue();
+
+		public void setRendererValue(Object value);
 
 		public Component getRendererComponent(
 			Component parent,
@@ -5546,6 +5746,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			add(label, BorderLayout.CENTER);
 		}
 
+		@Override
 		public void setForeground(Color fg) {
 			super.setForeground(fg);
 			if (label != null) {
@@ -5553,6 +5754,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			}
 		}
 
+		@Override
 		public void setBackground(Color bg) {
 			super.setBackground(bg);
 			if (label != null) {
@@ -5566,6 +5768,16 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			if (label != null) {
 				label.setEnabled(enabled);
 			}
+		}
+
+		@Override
+		public Object getRendererValue() {
+			return null;
+		}
+
+		@Override
+		public void setRendererValue(Object value) {
+			label.setIcon(getIcon(value));
 		}
 
 		@Override
@@ -5650,6 +5862,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			}
 		}
 
+		@Override
 		public void setForeground(Color fg) {
 			super.setForeground(fg);
 			if (label != null) {
@@ -5657,6 +5870,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			}
 		}
 
+		@Override
 		public void setBackground(Color bg) {
 			super.setBackground(bg);
 			if (label != null) {
@@ -5664,6 +5878,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			}
 		}
 
+		@Override
 		public void setEnabled(boolean enabled) {
 			super.setEnabled(enabled);
 			if (label != null) {
@@ -5679,6 +5894,16 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		@Override
 		public void setEditorValue(Object value) {
 			this.value = value;
+		}
+
+		@Override
+		public Object getRendererValue() {
+			return getEditorValue();
+		}
+
+		@Override
+		public void setRendererValue(Object value) {
+			setEditorValue(value);
 		}
 
 		@Override
@@ -6312,6 +6537,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			but = new JButton(icon);
 			but.addActionListener(this);
 			but.setPreferredSize(new Dimension(16, 16));
+			but.setFocusable(false);
 
 			pan.add(lab, BorderLayout.CENTER);
 			pan.add(but, BorderLayout.EAST);
@@ -6339,7 +6565,7 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (listener != null) {
-				listener.nodeActionPerformed(name, getEditorValue());
+				listener.nodeActionPerformed(name, getEditorValue(), but);
 			}
 		}
 	}
@@ -6391,7 +6617,8 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 						if (HyperlinkEditorComponent.this.listener != null) {
 							HyperlinkEditorComponent.this.listener.nodeActionPerformed(
 								HyperlinkEditorComponent.this.name,
-								getEditorValue()
+								getEditorValue(),
+								label
 							);
 						}
 					}
@@ -6401,8 +6628,14 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 			add(label, BorderLayout.CENTER);
 		}
 
-		public void setListener(TreeTableListener listener) {
-			this.listener = listener;
+		@Override
+		public Object getRendererValue() {
+			return value;
+		}
+
+		@Override
+		public void setRendererValue(Object value) {
+			label.setIcon(getIcon(value));
 		}
 
 		@Override
@@ -6477,6 +6710,11 @@ public class JTreeTableX extends JTable implements TreeExpansionListener {
 		protected String getTooltips(Object value) {
 			return null;
 		}
+
+		public void setListener(TreeTableListener listener) {
+			this.listener = listener;
+		}
+
 	}
 
 	//############################################################################

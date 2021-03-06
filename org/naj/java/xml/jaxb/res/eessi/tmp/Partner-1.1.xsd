@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.1.0">
+  <xs:complexType name="PartnerSender">
+    <xs:sequence>
+      <xs:element name="Identifier" type="PartnerIdentification"/>
+      <!--<xs:element name="ContactInformation" type="ContactInformation"/>-->
+      <xs:element name="ContactTypeIdentifier" type="ContactTypeIdentifierSender"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PartnerReceiver">
+    <xs:sequence>
+      <xs:element name="Identifier" type="PartnerIdentification"/>
+      <!--<xs:element name="ContactInformation" type="ContactInformation"/>-->
+      <xs:element name="ContactTypeIdentifier" type="ContactTypeIdentifierReceiver"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContactInformation">
+    <xs:sequence>
+      <xs:element name="ContactTypeIdentifier" type="ContactTypeIdentifierSender"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="PartnerIdentification">
+    <xs:simpleContent>
+      <xs:extension base="PartyIdentifier">
+        <xs:attribute name="Authority" type="xs:string" fixed="urn:eu:europa:ec:dgempl:eessi:ir"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- From BasicTypes -->
+  <xs:simpleType name="PartyIdentifier">
+    <xs:annotation>
+      <xs:documentation>
+        Each receiver participant must have a unique identification key that contains the EessiIso3166CountryCode and the institution id delimited by a colon
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -39,7 +39,7 @@ public class JTreeTableHeaderRenderer extends JLabel implements TableCellRendere
 		if (tx.indexOf("<br>") != -1) {
 			tx = "<html>" + tx + "</html>";
 		}
-
+		
 		TableCellRenderer r = treetable.getTableHeader().getDefaultRenderer();
 		JLabel lb = (JLabel) r.getTableCellRendererComponent(table, tx, isSelected, hasFocus, row, column);
 		lb.removeAll();
@@ -111,8 +111,7 @@ public class JTreeTableHeaderRenderer extends JLabel implements TableCellRendere
 
 		Border outside = lb.getBorder();
 		Border inside = BorderFactory.createEmptyBorder(0, 0, 0, p);
-		Border b = BorderFactory.createCompoundBorder(outside, inside);
-		lb.setBorder(b);
+		lb.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
 		return lb;
 	}

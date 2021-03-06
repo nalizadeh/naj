@@ -18,6 +18,13 @@ public class JTreeTableMouseListener extends MouseAdapter {
 	}
 
 	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.isControlDown()) {
+			treetable.clearSelection();
+		}
+	}
+
+	@Override
 	public void mouseExited(MouseEvent e) {
 		if (treetable.bodyRolloverIndex != -1) {
 			treetable.repaintRow(treetable.bodyRolloverIndex);

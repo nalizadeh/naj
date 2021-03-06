@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.1.0">
+  <xs:include schemaLocation="BasicTypes-1.1.xsd"/>
+  <xs:complexType name="DocumentIdentification">
+    <xs:all>
+      <xs:element name="TypeVersion" type="SedSchemaVersion"/>
+      <xs:element name="InstanceIdentifier" type="UUID"/>
+      <xs:element name="Type" type="SedType"/>
+      <xs:element name="CaseAction" type="CaseAction"/>
+      <xs:element name="CreationDateAndTime" type="xs:dateTime"/>
+    </xs:all>
+  </xs:complexType>
+</xs:schema>

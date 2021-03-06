@@ -2,6 +2,8 @@
 
 package org.naj.java.ui.comps.treetable;
 
+import java.awt.Component;
+
 /**
  * @author  P203125
  */
@@ -19,7 +21,7 @@ public class JTreeTableDefaultListener implements JTreeTableListener {
 	}
 
 	@Override
-	public void nodeActionPerformed(String name, Object args) {
+	public void nodeActionPerformed(String name, Object args, Component comp) {
 	}
 
 	@Override

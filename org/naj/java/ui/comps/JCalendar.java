@@ -44,14 +44,17 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerListModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -92,9 +95,20 @@ public class JCalendar extends JPanel {
 	 * @see
 	 */
 	public JCalendar() {
+		this(true);
+	}
+	
+	/**
+	 * @param
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public JCalendar(boolean usePopup) {
 		super(new BorderLayout());
 
-		cb = new JCalendarBox(this);
+		cb = new JCalendarBox(this, usePopup);
 
 		tx = new JTextField();
 		tx.addFocusListener(
@@ -424,10 +438,12 @@ public class JCalendar extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 
+		private JPopupMenu popupmenu;
 		private JPopup popup;
 		private GregorianCalendar date;
 		private JCalendarTable days;
 		private JComboBox<String> months;
+		private JSpinner monthsSp;
 		private JSpinner years;
 		private JButton today = new JButton(Helper.getImage("calendar.gif"));
 		private JCalendar parent;
@@ -449,19 +465,40 @@ public class JCalendar extends JPanel {
 		 *
 		 * @see
 		 */
-		JCalendarBox(JCalendar parent) {
+		JCalendarBox(JCalendar parent, boolean usePopup) {
 			this.parent = parent;
 
-			months = new JComboBox<String>(monthnames);
-			months.setPreferredSize(new Dimension(80, 22));
-			months.addActionListener(
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent ev) {
+			if (usePopup) {
+				popup = new JPopup();
+				
+				months = new JComboBox<String>(monthnames);
+				months.setPreferredSize(new Dimension(80, 22));
+				months.addActionListener(
+					new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent ev) {
+							updateDate();
+						}
+					}
+				);
+			} else {
+				popupmenu = new JPopupMenu();
+				SpinnerListModel monthModel = new SpinnerListModel(monthnames);
+				monthsSp = new JSpinner(monthModel);
+				monthsSp.setPreferredSize(new Dimension(80, 22));
+				monthsSp.addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
 						updateDate();
 					}
+				});
+				
+				JComponent editor = monthsSp.getEditor();
+				if (editor instanceof JSpinner.DefaultEditor) {
+					JTextField tx = ((JSpinner.DefaultEditor) editor).getTextField(); 
+					tx.setHorizontalAlignment(JTextField.LEFT);
+					tx.setEditable(false);
 				}
-			);
+			}
 
 			SpinnerDateModel yearModel = new SpinnerDateModel();
 			years = new JSpinner(yearModel);
@@ -494,15 +531,8 @@ public class JCalendar extends JPanel {
 			days.addMouseListener(new CalendarMouseListener());
 			days.addMouseMotionListener(new CalendarMouseListener());
 
-			popup =
-				new JPopup() {
-					@Override
-					public void popupClosed() {
-					}
-				};
-
 			JPanel buttonPanel1 = new JPanel(new BorderLayout(1, 1));
-			buttonPanel1.add(months, BorderLayout.CENTER);
+			buttonPanel1.add(usePopup ? months : monthsSp, BorderLayout.CENTER);
 			buttonPanel1.add(years, BorderLayout.EAST);
 
 			JPanel buttonPanel2 = new JPanel(new BorderLayout(1, 1));
@@ -522,6 +552,7 @@ public class JCalendar extends JPanel {
 			Dimension d1 = buttonPanel2.getPreferredSize();
 			Dimension d2 = days.getPreferredSize();
 			setPreferredSize(new Dimension(d1.width + 12, d1.height + d2.height + 26)); //178, 173));
+			setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 			setDate(new GregorianCalendar());
 		}
@@ -536,7 +567,13 @@ public class JCalendar extends JPanel {
 		protected void open(Component parent) {
 			Dimension dp = parent.getPreferredSize();
 			Dimension dm = getPreferredSize();
-			popup.open(parent, this, dp.width - dm.width, dp.height + 4, dm.width, dm.height);
+			if (popup != null) {
+				popup.open(parent, this, dp.width - dm.width + 1, dp.height + 3);
+			} else {
+				popupmenu.add(this);
+				popupmenu.setPreferredSize(new Dimension(dm.width, dm.height + 3));
+				popupmenu.show(parent, dp.width - dm.width, dp.height + 3);
+			}
 			transferFocus();
 			days.requestFocusInWindow();
 		}
@@ -549,7 +586,13 @@ public class JCalendar extends JPanel {
 		 * @see
 		 */
 		protected void close() {
-			popup.close();
+			if (popup != null) {
+				popup.close();
+			}
+			else {
+				popupmenu.removeAll();
+				popupmenu.setVisible(false);
+			}
 			hoveredColumn = -1;
 			hoveredRow = -1;
 			if (!getDayString().equals("")) {
@@ -629,7 +672,14 @@ public class JCalendar extends JPanel {
 		 * @see
 		 */
 		protected int getMonth() {
-			return months.getSelectedIndex();
+			int m = 0;			
+			if (popup != null) {
+				m = months.getSelectedIndex();
+			} else {
+				String mn = (String)monthsSp.getValue();
+				while (!monthnames[m].equals(mn)) m++;
+			}
+			return m;
 		}
 
 		/**
@@ -640,8 +690,15 @@ public class JCalendar extends JPanel {
 		 * @see
 		 */
 		protected String getMonthString() {
-			String m = "" + (months.getSelectedIndex() + 1);
-			return m.length() < 2 ? ("0" + m) : m;
+			int m = 0;			
+			if (popup != null) {
+				m = months.getSelectedIndex() + 1;
+			} else {
+				String mn = (String)monthsSp.getValue();
+				while (!monthnames[m].equals(mn)) m++;
+			}
+			String ms = "" + m;
+			return ms.length() < 2 ? ("0" + ms) : ms;
 		}
 
 		/**
@@ -652,7 +709,7 @@ public class JCalendar extends JPanel {
 		 * @see
 		 */
 		protected String getMonthName() {
-			return (String) months.getSelectedItem();
+			return popup != null ? (String) months.getSelectedItem() : (String) monthsSp.getValue();
 		}
 
 		/**
@@ -724,7 +781,11 @@ public class JCalendar extends JPanel {
 
 			initial = true;
 			years.setValue(date.getTime());
-			months.setSelectedIndex(m);
+			if (popup != null) {
+				months.setSelectedIndex(m);
+			} else {
+				monthsSp.setValue(monthnames[m]);
+			}
 			initial = false;
 
 			updateDate();
@@ -742,11 +803,19 @@ public class JCalendar extends JPanel {
 		 */
 		private void updateDate() {
 			if (!initial) {
+				
+				int m = 0;
+				if (popup != null) {
+					m = months.getSelectedIndex();
+				}
+				else {
+					String mn = (String)monthsSp.getValue();
+					while (!monthnames[m].equals(mn)) m++;
+				}
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime((Date) years.getValue());
 
 				int d = date.get(Calendar.DAY_OF_MONTH);
-				int m = months.getSelectedIndex();
 				int y = calendar.get(Calendar.YEAR);
 
 				days.update(d, m, y);
@@ -1137,10 +1206,16 @@ public class JCalendar extends JPanel {
 		);
 
 		frame.getContentPane().setLayout(null);
-		JCalendar b = new JCalendar();
-		b.setDate("31.12.1967");
-		b.setBounds(40, 40, 90, 22);
-		frame.getContentPane().add(b);
+		JCalendar c1 = new JCalendar();
+		c1.setDate("31.12.1967");
+		
+		JCalendar c2 = new JCalendar(false);
+		c2.setDate("31.12.1967");
+
+		c1.setBounds(40, 40, 90, 22);
+		c2.setBounds(140, 40, 90, 22);
+		frame.getContentPane().add(c1);
+		frame.getContentPane().add(c2);
 		frame.pack();
 		frame.setSize(300, 200);
 		frame.setVisible(true);

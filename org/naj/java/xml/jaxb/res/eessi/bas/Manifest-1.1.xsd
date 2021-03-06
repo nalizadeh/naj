@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.1.0">
+  <xs:include schemaLocation="BasicTypes-1.1.xsd"/>
+  <xs:complexType name="Manifest">
+    <xs:sequence>
+      <xs:element name="NumberOfItems" type="xs:positiveInteger"/>
+      <xs:element name="ManifestItem" type="ManifestItem" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ManifestItem">
+    <xs:sequence>
+      <xs:element name="MimeTypeQualifierCode" type="AllowedAttachmentMimeTypeQualifierCode"/>
+      <xs:element name="UniformResourceIdentifier" type="UUID"/>
+      <xs:element name="Description" type="SectionReference"/>
+      <xs:element name="MedicalScope" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="FileName" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

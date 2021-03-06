@@ -3,6 +3,7 @@
 package org.naj.java.ui.comps.treetable;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,11 +16,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 //===============================================================================
-// JTreeTableNode
 //
-// This is the callback interface. Provides for initialization of the nodes.
-// Through this interface the user can determine most properties of the nodes,
-// for example icons, colors, fonts, etc.
+// JTreeTableNode is the main base class, which provides operations for examining 
+// and modifying a node's parent and children and also operations for examining 
+// the tree that the node is a part of and implements almost all of the properties 
+// of the node.
+//
 //===============================================================================
 /**
  * @author  P203125
@@ -32,7 +34,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	private String myName;
 	private int myLevel;
 	private JTreeTableNode myParent;
-	private List<JTreeTableNode> myChilds;
+	private List<JTreeTableNode> myChildren;
 	private boolean selected;
 	private int checkState;
 
@@ -51,7 +53,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 		this.myKey = null;
 		this.myName = null;
 		this.myLevel = 0;
-		this.myChilds = new ArrayList<JTreeTableNode>();
+		this.myChildren = null;
 		this.selected = false;
 		this.checkState = JTreeTableCheckboxTree.NOT_SELECTED;
 	}
@@ -145,7 +147,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void getKeyPaths(List<String> keys) {
 		if (hasChild()) {
-			for (JTreeTableNode o : myChilds) {
+			for (JTreeTableNode o : myChildren) {
 				o.getKeyPaths(keys);
 			}
 		} else {
@@ -180,8 +182,10 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 		this.myKey = parent == null ? "root" : createNodeKey();
 		this.myName = parent == null ? "root" : createNodeName();
 		this.myLevel = parent == null ? 0 : parent.myLevel + 1;
-		for (JTreeTableNode node : myChilds) {
-			node.setNodeParent(this);
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.setNodeParent(this);
+			}
 		}
 	}
 
@@ -221,18 +225,21 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	public JTreeTableNode getNodeByName(String name, boolean caseSensitive) {
+		String nm = getNodeName();
 		if (caseSensitive) {
-			if (getNodeName().equals(name)) {
+			if (name.equals(nm)) {
 				return this;
 			}
-		} else if (getNodeName().toLowerCase().equals(name.toLowerCase())) {
+		} else if (nm.toLowerCase().equals(name.toLowerCase())) {
 			return this;
 		}
 
-		for (JTreeTableNode node : myChilds) {
-			JTreeTableNode n = node.getNodeByName(name, caseSensitive);
-			if (n != null) {
-				return n;
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				JTreeTableNode n = node.getNodeByName(name, caseSensitive);
+				if (n != null) {
+					return n;
+				}
 			}
 		}
 		return null;
@@ -251,10 +258,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 		if (getNodeKey().equals(key)) {
 			return this;
 		}
-		for (JTreeTableNode node : myChilds) {
-			JTreeTableNode n = node.getNodeByKey(key);
-			if (n != null) {
-				return n;
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				JTreeTableNode n = node.getNodeByKey(key);
+				if (n != null) {
+					return n;
+				}
 			}
 		}
 		return null;
@@ -276,10 +285,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 		if (k1.equals(k2)) {
 			return this;
 		}
-		for (JTreeTableNode node : myChilds) {
-			JTreeTableNode n = node.getNodeByKeyParts(kpos1, kpos2, key);
-			if (n != null) {
-				return n;
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				JTreeTableNode n = node.getNodeByKeyParts(kpos1, kpos2, key);
+				if (n != null) {
+					return n;
+				}
 			}
 		}
 		return null;
@@ -294,7 +305,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	protected void initChilds(List<? extends JTreeTableNode> nodes) {
+	protected void initChildren(List<? extends JTreeTableNode> nodes) {
 		if (nodes != null && !nodes.isEmpty()) {
 			clear(true);
 			for (JTreeTableNode node : nodes) {
@@ -312,7 +323,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	protected void updateChilds(List<? extends JTreeTableNode> nodes) {
+	protected void updateChildren(List<? extends JTreeTableNode> nodes) {
 		if (nodes != null) {
 			clear(false);
 			for (JTreeTableNode node : nodes) {
@@ -331,7 +342,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	public boolean hasChild() {
-		return !myChilds.isEmpty();
+		return myChildren != null && !myChildren.isEmpty();
 	}
 
 	/**
@@ -343,8 +354,8 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public List<JTreeTableNode> getChilds() {
-		return myChilds;
+	public List<JTreeTableNode> getChildren() {
+		return myChildren;
 	}
 
 	/**
@@ -370,17 +381,19 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	public JTreeTableNode getChild(String name, boolean caseSensitive) {
-		for (JTreeTableNode node : myChilds) {
-			if (node.getNodeName() == null) {
-				return null;
-			}
-			if (caseSensitive) {
-				if (node.getNodeName().equals(name)) {
-					return node;
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				if (node.getNodeName() == null) {
+					return null;
 				}
-			} else {
-				if (node.getNodeName().toLowerCase().equals(name.toLowerCase())) {
-					return node;
+				if (caseSensitive) {
+					if (node.getNodeName().equals(name)) {
+						return node;
+					}
+				} else {
+					if (node.getNodeName().toLowerCase().equals(name.toLowerCase())) {
+						return node;
+					}
 				}
 			}
 		}
@@ -396,14 +409,17 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public List<JTreeTableNode> getChilds(String name) {
-		List<JTreeTableNode> cc = new ArrayList<JTreeTableNode>();
-		for (JTreeTableNode o : myChilds) {
-			if (o.getNodeName().equals(name)) {
-				cc.add(o);
+	public List<JTreeTableNode> getChildren(String name) {
+		if (hasChild()) {
+			List<JTreeTableNode> cc = new ArrayList<JTreeTableNode>();
+			for (JTreeTableNode o : myChildren) {
+				if (o.getNodeName().equals(name)) {
+					cc.add(o);
+				}
 			}
+			return cc;
 		}
-		return cc;
+		return null;
 	}
 
 	/**
@@ -415,19 +431,20 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public List<JTreeTableNode> getChilds(Class<?> classtype) {
-
-		if (classtype == null) {
-			return myChilds;
-		}
-
-		List<JTreeTableNode> cc = new ArrayList<JTreeTableNode>();
-		for (JTreeTableNode o : myChilds) {
-			if (o.getClass() == classtype) {
-				cc.add(o);
+	public List<JTreeTableNode> getChildren(Class<?> classtype) {
+		if (hasChild()) {
+			if (classtype != null) {
+				List<JTreeTableNode> cc = new ArrayList<JTreeTableNode>();
+				for (JTreeTableNode o : myChildren) {
+					if (o.getClass() == classtype) {
+						cc.add(o);
+					}
+				}
+				return cc;
 			}
+			return myChildren;
 		}
-		return cc;
+		return null;
 	}
 
 	/**
@@ -466,11 +483,14 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	protected void addChild(JTreeTableNode child, boolean setParent, boolean multiple) {
+		if (myChildren == null) {
+			myChildren = new ArrayList<JTreeTableNode>();
+		}
 		if (multiple || getChild(child.getNodeName()) == null) {
 			if (setParent) {
 				child.setNodeParent(this);
 			}
-			myChilds.add(child);
+			myChildren.add(child);
 			add(child);
 		}
 	}
@@ -486,7 +506,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void removeChild(JTreeTableNode child) {
 		if (getNodeByName(child.getNodeName()) != null) {
-			myChilds.remove(child);
+			myChildren.remove(child);
 			remove(child);
 		}
 	}
@@ -503,7 +523,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	public void removeChild(String name) {
 		JTreeTableNode child = getNodeByName(name);
 		if (child != null) {
-			myChilds.remove(child);
+			myChildren.remove(child);
 			remove(child);
 		}
 	}
@@ -533,16 +553,19 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public void clear(boolean childsToo) {
-		if (childsToo) {
-			for (JTreeTableNode node : myChilds) {
+	public void clear(boolean childrenToo) {
+		if (childrenToo && hasChild()) {
+			for (JTreeTableNode node : myChildren) {
 				node.clear(true);
 			}
 		}
-
+		
 		// this must be done here!!
 		removeAllChildren();
-		myChilds.clear();
+		
+		if (hasChild()) {
+			myChildren.clear();
+		}
 	}
 
 	/**
@@ -633,8 +656,10 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	private int getDepth(int d) {
 		int dd = d;
-		for (JTreeTableNode node : myChilds) {
-			dd = Math.max(dd, node.getDepth(d + 1));
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				dd = Math.max(dd, node.getDepth(d + 1));
+			}
 		}
 		return dd;
 	}
@@ -650,9 +675,11 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	protected void addToTree() {
 		setUserObject(myName);
-		for (JTreeTableNode node : myChilds) {
-			add(node);
-			node.addToTree();
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				add(node);
+				node.addToTree();
+			}
 		}
 	}
 
@@ -853,10 +880,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	public void setSelected(boolean selected) {
-		for (JTreeTableNode node : myChilds) {
-			node.setSelected(selected);
-		}
 		this.selected = selected;
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.setSelected(selected);
+			}
+		}
 	}
 
 	/**
@@ -887,10 +916,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void expand(JTree tree, int level) {
 		tree.expandPath(new TreePath(getPath()));
-		for (JTreeTableNode node : myChilds) {
-			if (node.getNodeLevel() < level) {
-				tree.expandPath(new TreePath(node.getPath()));
-				node.expand(tree, level);
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				if (node.getNodeLevel() < level) {
+					tree.expandPath(new TreePath(node.getPath()));
+					node.expand(tree, level);
+				}
 			}
 		}
 	}
@@ -905,10 +936,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	public void collapse(JTree tree, int level) {
-		for (JTreeTableNode node : myChilds) {
-			node.collapse(tree, level);
-			if (node.getNodeLevel() >= level) {
-				tree.collapsePath(new TreePath(node.getPath()));
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.collapse(tree, level);
+				if (node.getNodeLevel() >= level) {
+					tree.collapsePath(new TreePath(node.getPath()));
+				}
 			}
 		}
 		if (level < 0) {
@@ -929,36 +962,39 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void sort(Comparator<Object> comparator, int columnIndex, int sortDirection) {
 
-		// first sort children
-		for (JTreeTableNode node : myChilds) {
-			node.sort(comparator, columnIndex, sortDirection);
-		}
+		if (hasChild()) {
 
-		// and now sort myself
-		JTreeTableNode[] rows = myChilds.toArray(new JTreeTableNode[myChilds.size()]);
-
-		for (int i = rows.length; i > 1; i--) {
-			for (int j = 1; j < i; j++) {
-				JTreeTableNode r1 = rows[j - 1];
-				JTreeTableNode r2 = rows[j];
-
-				Object o1 = r1.getValues()[columnIndex];
-				Object o2 = r2.getValues()[columnIndex];
-				int co = comparator.compare(o1, o2);
-				if (
-					(sortDirection == JTreeTable.SORTDIR_ASCENDING && co > 0)
-					|| (sortDirection == JTreeTable.SORTDIR_DESCENDING && co < 0)
-				) {
-					rows[j - 1] = r2;
-					rows[j] = r1;
+			// first sort children
+			for (JTreeTableNode node : myChildren) {
+				node.sort(comparator, columnIndex, sortDirection);
+			}
+	
+			// and now sort myself
+			JTreeTableNode[] rows = myChildren.toArray(new JTreeTableNode[myChildren.size()]);
+	
+			for (int i = rows.length; i > 1; i--) {
+				for (int j = 1; j < i; j++) {
+					JTreeTableNode r1 = rows[j - 1];
+					JTreeTableNode r2 = rows[j];
+	
+					Object o1 = r1.getValues()[columnIndex];
+					Object o2 = r2.getValues()[columnIndex];
+					int co = comparator.compare(o1, o2);
+					if (
+						(sortDirection == JTreeTable.SORTDIR_ASCENDING && co > 0)
+						|| (sortDirection == JTreeTable.SORTDIR_DESCENDING && co < 0)
+					) {
+						rows[j - 1] = r2;
+						rows[j] = r1;
+					}
 				}
 			}
-		}
-
-		// finally order the child nodes again
-		removeAllChildren();
-		for (int i = 0; i < rows.length; i++) {
-			add(rows[i]);
+	
+			// finally order the child nodes again
+			removeAllChildren();
+			for (int i = 0; i < rows.length; i++) {
+				add(rows[i]);
+			}
 		}
 	}
 
@@ -971,12 +1007,13 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public void search(Object condition, List<JTreeTableNode> results) {
-		for (JTreeTableNode node : myChilds) {
-			node.search(condition, results);
+	public void search(Object condition, List<JTreeTableNode> results, boolean caseSensitive) {
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.search(condition, results, caseSensitive);
+			}
 		}
-
-		searchData(condition, results);
+		searchData(condition, results, caseSensitive);
 	}
 
 	/**
@@ -988,11 +1025,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public void searchData(Object condition, List<JTreeTableNode> results) {
+	public void searchData(Object condition, List<JTreeTableNode> results, boolean sensitive) {
 		Object[] data = getValues();
 		if (data != null) {
 			for (Object o : data) {
-				if (o != null && o.toString().indexOf(condition.toString()) != -1) {
+				String tx = o == null ? "" : sensitive ? o.toString() : o.toString().toLowerCase();
+				if (tx.indexOf(sensitive ? condition.toString() : condition.toString().toLowerCase()) != -1) {
 					results.add(this);
 					break;
 				}
@@ -1058,8 +1096,8 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public JTreeTableNode cloneNode(boolean childsToo) {
-		return cloneToNode(null, childsToo, true, false);
+	public JTreeTableNode cloneNode(boolean childrenToo) {
+		return cloneToNode(null, childrenToo, true, false);
 	}
 
 	/**
@@ -1071,8 +1109,8 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childsToo) {
-		return cloneToNode(node, childsToo, true, false);
+	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childrenToo) {
+		return cloneToNode(node, childrenToo, true, false);
 	}
 
 	/**
@@ -1084,8 +1122,8 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childsToo, boolean newInstance) {
-		return cloneToNode(node, childsToo, newInstance, false);
+	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childrenToo, boolean newInstance) {
+		return cloneToNode(node, childrenToo, newInstance, false);
 	}
 
 	/**
@@ -1097,14 +1135,14 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 *
 	 * @see
 	 */
-	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childsToo, boolean newInstance, boolean difTypes) {
+	public JTreeTableNode cloneToNode(JTreeTableNode node, boolean childrenToo, boolean newInstance, boolean difTypes) {
 
 		JTreeTableNode newNode = node == null ? instance() : node;
 
 		copyToNode(newNode);
 
-		if (childsToo) {
-			for (JTreeTableNode no : myChilds) {
+		if (childrenToo && hasChild()) {
+			for (JTreeTableNode no : myChildren) {
 				newNode.addChild(
 					no.cloneToNode(
 						newInstance ? difTypes ? node.instance() : no.instance() : no,
@@ -1175,8 +1213,10 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void copyToList(List<JTreeTableNode> nodes) {
 		nodes.add(this);
-		for (JTreeTableNode node : myChilds) {
-			node.copyToList(nodes);
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.copyToList(nodes);
+			}
 		}
 	}
 
@@ -1191,8 +1231,10 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void copyToMap(Map<Object, JTreeTableNode> map) {
 		map.put(getNodeKey(), this);
-		for (JTreeTableNode node : myChilds) {
-			node.copyToMap(map);
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.copyToMap(map);
+			}
 		}
 	}
 
@@ -1220,6 +1262,19 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public Color getBackgroundColor(int row, int column) {
 		return Color.WHITE;
+	}
+
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public Font getFont(int row, int column) {
+		return null;
 	}
 
 	/**
@@ -1271,9 +1326,12 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 * @see
 	 */
 	protected int getNodesCount(JTreeTableNode node) {
-		int n = node.myChilds.size();
-		for (JTreeTableNode c : node.myChilds) {
-			n += getNodesCount(c);
+		int n = 0;
+		if (node.hasChild()) {
+			n = node.myChildren.size();
+			for (JTreeTableNode c : node.myChildren) {
+				n += getNodesCount(c);
+			}
 		}
 		return n;
 	}
@@ -1289,8 +1347,10 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	 */
 	public void print(String prefix) {
 		System.out.println(prefix + " " + myName);
-		for (JTreeTableNode node : myChilds) {
-			node.print(prefix + "---");
+		if (hasChild()) {
+			for (JTreeTableNode node : myChildren) {
+				node.print(prefix + "---");
+			}
 		}
 	}
 
@@ -1311,7 +1371,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 		String atr = getXmlAttributes();
 		String xml = "<" + myName + (atr == null || atr.isEmpty() ? "" : " " + atr) + ">";
 		if (hasChild()) {
-			for (JTreeTableNode node : myChilds) {
+			for (JTreeTableNode node : myChildren) {
 				xml += node.toXML();
 			}
 		} else {
@@ -1322,7 +1382,7 @@ public class JTreeTableNode extends DefaultMutableTreeNode {
 	}
 
 	/**
-	 * @return  String a="v" b="v",..
+	 * @return  String
 	 */
 	protected String getXmlValue() {
 		return "x";

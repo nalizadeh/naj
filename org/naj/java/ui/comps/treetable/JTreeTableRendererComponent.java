@@ -10,6 +10,10 @@ import java.awt.Component;
  */
 public interface JTreeTableRendererComponent {
 
+	public Object getRendererValue();
+
+	public void setRendererValue(Object value);
+
 	public Component getRendererComponent(
 		Component parent,
 		Object    value,

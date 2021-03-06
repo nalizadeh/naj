@@ -78,6 +78,12 @@ public class JTreeTableHeaderListener extends MouseAdapter implements TableColum
 	}
 
 	@Override
+	public void mouseEntered(MouseEvent e) {
+		treetable.headerRolloverIndex =
+			treetable.convertColumnIndexToModel(treetable.getColumnModel().getColumnIndexAtX(e.getX()));
+	}
+
+	@Override
 	public void mouseExited(MouseEvent e) {
 		treetable.headerRolloverIndex = -1;
 	}

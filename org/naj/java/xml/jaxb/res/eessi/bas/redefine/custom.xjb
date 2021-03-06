@@ -1,0 +1,7 @@
+<jxb:bindings version="1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <jxb:bindings schemaLocation="custom2.xsd" >
+        <jxb:bindings node="//xsd:complexType[@name='Address'][1]">
+                <jxb:class name="Sd1"/> 
+        </jxb:bindings>
+    </jxb:bindings>
+</jxb:bindings>

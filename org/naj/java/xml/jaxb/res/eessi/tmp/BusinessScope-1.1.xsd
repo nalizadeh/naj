@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.1.0">
+
+  <xs:complexType name="BusinessScope">
+    <xs:all>
+      <xs:element name="CaseId" type="CaseId"/>
+      <xs:element name="SetId" type="UUID"/>
+      <xs:element name="DocumentVersion" type="xs:positiveInteger"/>
+      <xs:element name="RelatedSetId" type="UUID" minOccurs="0"/>
+      <xs:element name="PersonalProtectedCase" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="TestCase" type="xs:boolean" minOccurs="0"/>
+      <xs:element name="LocalCaseData" type="xs:string" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="CaseId">
+    <xs:sequence>
+      <xs:element name="InstanceIdentifier" type="UUID"/>
+      <xs:element name="BusinessServiceName" type="BusinessServiceName"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

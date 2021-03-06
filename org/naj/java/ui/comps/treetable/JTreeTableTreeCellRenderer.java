@@ -5,6 +5,7 @@ package org.naj.java.ui.comps.treetable;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.JTree;
@@ -35,19 +36,33 @@ public class JTreeTableTreeCellRenderer extends DefaultTreeCellRenderer {
 	) {
 		super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
+		Font font = null;
 		JTreeTableNode node = ((JTreeTableTree) tree).getNodeAtRow(row);
 		if (node != null) {
 			setText(node.getNodeName());
 			setIcon(tree, value, leaf, node.getIcon());
+
+			font = node.getFont(row, 0);
+
+			Color fg = node.getForegroundColor(row, 0);
+			Color bg = node.getBackgroundColor(row, 0);		
+
+			if (fg == null) fg = treetable.getForeground();
+			if (bg == null) bg = treetable.getBackground();
+
+			setForeground(fg);
+			setBackground(bg);
 		}
 
 		JTreeTableProperties props = treetable.getProperties();
 
-		setFont(JTreeTableProperties.TT_FONT1);
+		setFont(font == null ? JTreeTableProperties.TT_FONT1 : font);
 
 		if (selected) {
 			setTextSelectionColor(treetable.getSelectionForeground());
 			setBackgroundSelectionColor(treetable.getSelectionBackground());
+			setForeground(treetable.getSelectionForeground());
+			setBackground(treetable.getSelectionBackground());
 		} else {
 			Color c1 =
 				props.showRollover && treetable.bodyRolloverIndex == row ? JTreeTableProperties.ROLLOVER_COLOR

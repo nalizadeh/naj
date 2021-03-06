@@ -133,7 +133,7 @@ public class JTreeTableTest extends JPanel {
 		treetable.getColumnModel().getColumn(3).setPreferredWidth(160);
 		treetable.getColumnModel().getColumn(3).setMaxWidth(160);
 		treetable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-		treetable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		treetable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	}
 
 	private void doInBackground(final String path, final String pattern) {

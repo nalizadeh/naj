@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Document">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="Product">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PROD_REFLIDICCOM" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_CINT" type="xs:string" />
+              <xs:element name="PROD_REF" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REFCOM_FRNS" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REFFRNS" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REFCOM" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REFFOUR" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_CEAN" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_LIBE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_LIBE_FRNS" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_LLRX" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_LLFR" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_SVIE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_ACHA" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_DACH" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_VENT" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_DVEN" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_GENE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_FABR_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_MAGA_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_FRNS_CODE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_TYPR" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_MACH2" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_CUNS" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_CECL" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_D3E" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_D3EU" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_D3EC" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_PON1" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_QPO1" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_ICF1" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_ICF2" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REPE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_REPA" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_RECE" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_RECA" type="xs:string" minOccurs="0" />
+              <xs:element name="PROD_ALIN" type="xs:string" minOccurs="0" />    
+              <xs:element name="PROD_OSPE" type="xs:string" minOccurs="0" />        
+              <xs:element name="PROD_RECEHIST" type="xs:string" />
+              <xs:element name="CMODVERSION" type="xs:string" />
+              <xs:element name="CPRODUCTKEYID" type="xs:decimal" />
+              <xs:element name="CATALOGID" type="xs:decimal" />
+              <xs:element name="PRODUCTKEYID" type="xs:decimal" />
+              <xs:element name="MODVERSION" type="xs:decimal" />
+              <xs:element name="CATALOGVERSIONNUMBER" type="xs:decimal" />
+              <xs:element name="ACTIVE" type="xs:string" />
+              <xs:element name="CREATIONDATE" type="xs:dateTime" />
+              <xs:element name="MODDATE" type="xs:dateTime" />
+              <xs:element name="MODMEMBERID" type="xs:decimal" />
+              <xs:element name="LASTIMPORTTIME" type="xs:string" />
+              <xs:element name="CHECKSUM" type="xs:decimal" />
+              <xs:element name="STATE" type="xs:string" />
+              <xs:element name="PARENTVERSION" type="xs:decimal" />
+              <xs:element name="OWNERID" type="xs:decimal" minOccurs="0" />
+              <xs:element name="OWNERTYPE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="LASTCONFIRMEDVERSION" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PROCESSLOGID" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BATCHID" type="xs:decimal" minOccurs="0" />
+              <xs:element name="EFFECTIVEDATE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ENDEFFECTIVEDATE" type="xs:dateTime" minOccurs="0" />         
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+	targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+	elementFormDefault="qualified" attributeFormDefault="unqualified"
+	version="1.1.0"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.0">
+
+	<xs:annotation>
+		<xs:appinfo>
+		   <jaxb:schemaBindings>
+				<jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.international.v04m02.header"/>
+			</jaxb:schemaBindings>
+			<jaxb:bindings node="//xs:complexType[@name='StandardBusinessDocumentHeader']">
+                <jaxb:class name="StandardBusinessDocumentHeaderType"/> 
+			</jaxb:bindings>
+		 </xs:appinfo>
+	</xs:annotation>
+
+	<xs:include schemaLocation="DocumentIdentification-1.1.xsd" />
+	<xs:include schemaLocation="Partner-1.1.xsd" />
+	<xs:include schemaLocation="Manifest-1.1.xsd" />
+	<xs:include schemaLocation="BusinessScope-1.1.xsd" />
+
+	<!-- Zur Generierung des Mappings auf einen StandardBusinessDocumentHeader 
+		wird die allgemeine Definition des StandardBusinessDocumentHeaders verwendet. 
+		Eine Transaktions-XSD definiert den Header ggf. etwas anders, beispielsweise 
+		ist nur in FORWARD-Transaktionen die Angabe von mehreren RECEIVER-IDs möglich. 
+		Damit wir nicht für jede Transaktions-XSD ein eigenes Header-Mapping implementieren, 
+		wird für das XML-Mapping die übergreifende Definition verwendet. 
+		Fehler werden dann bei der Validierung gegen eine Transaktions-XSD entdeckt.
+		================================================================================  
+		Umbenennung der XSD-Types, weil wir identische Namen für die Interfaces verwenden.
+		
+		@author  Sven Erichsen (P209928, IT.IN.PJ02)
+		-->
+	<xs:complexType name="StandardBusinessDocumentHeader">
+		<xs:sequence>
+			<xs:element name="HeaderVersion" type="xs:string" fixed="1.1" />
+			<xs:element name="Sender" type="PartnerSender" />
+			<xs:element name="Receiver" type="PartnerReceiver" maxOccurs="unbounded" />
+			<xs:element name="DocumentIdentification" type="DocumentIdentification" />
+			<xs:element name="Manifest" type="Manifest" minOccurs="0" />
+			<xs:element name="BusinessScope" type="BusinessScope" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="StandardBusinessDocumentHeader" type="StandardBusinessDocumentHeader"/> 
+</xs:schema>

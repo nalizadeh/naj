@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://somehost.com/schema_schedule_request.xsd">
+    <header>
+        <originator>MySatelliteCompany</originator>
+        <recipient>Recipient</ recipient>
+        <schedule_valid_from>2008-12-17T00:00:00Z</schedule_valid_from>
+        <schedule_valid_to>2008-12-18T00:00:07Z</schedule_valid_to>
+        <request_reference>HGT4285T3</request_reference>
+        <generation_time>2008-12-16T08:24:00Z</generation_time>
+     </header>
+     <body>
+         <schedule_request>
+         <start_time>2008-12-17T09:30:47Z</start_time>
+         <end_time>2008-12-17T09:33:47Z</end_time>
+         <satellite_name>MySat</satellite_name>
+         </schedule_request>
+     </body>
+</request>

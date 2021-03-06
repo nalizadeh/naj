@@ -52,6 +52,7 @@ public class JTreeTableActionEditorComponent extends JTreeTableDefaultEditorComp
 		but = new JButton(icon);
 		but.addActionListener(this);
 		but.setPreferredSize(new Dimension(16, 16));
+		but.setFocusable(false);
 
 		pan.add(lab, BorderLayout.CENTER);
 		pan.add(but, BorderLayout.EAST);
@@ -79,7 +80,7 @@ public class JTreeTableActionEditorComponent extends JTreeTableDefaultEditorComp
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (listener != null) {
-			listener.nodeActionPerformed(name, getEditorValue());
+			listener.nodeActionPerformed(name, getEditorValue(), but);
 		}
 	}
 }

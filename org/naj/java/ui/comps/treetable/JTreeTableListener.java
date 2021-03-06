@@ -2,6 +2,8 @@
 
 package org.naj.java.ui.comps.treetable;
 
+import java.awt.Component;
+
 /**
  * @author  P203125
  */
@@ -12,7 +14,7 @@ public interface JTreeTableListener {
 
 	void nodesDeselected();
 
-	void nodeActionPerformed(String name, Object args);
+	void nodeActionPerformed(String name, Object args, Component comp);
 
 	void nodeCheckChanged(JTreeTableNode node);
 }

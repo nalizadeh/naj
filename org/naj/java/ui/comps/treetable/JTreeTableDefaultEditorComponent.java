@@ -64,6 +64,7 @@ public abstract class JTreeTableDefaultEditorComponent extends JPanel implements
 		}
 	}
 
+	@Override
 	public void setForeground(Color fg) {
 		super.setForeground(fg);
 		if (label != null) {
@@ -71,6 +72,7 @@ public abstract class JTreeTableDefaultEditorComponent extends JPanel implements
 		}
 	}
 
+	@Override
 	public void setBackground(Color bg) {
 		super.setBackground(bg);
 		if (label != null) {
@@ -78,6 +80,7 @@ public abstract class JTreeTableDefaultEditorComponent extends JPanel implements
 		}
 	}
 
+	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		if (label != null) {
@@ -93,6 +96,16 @@ public abstract class JTreeTableDefaultEditorComponent extends JPanel implements
 	@Override
 	public void setEditorValue(Object value) {
 		this.value = value;
+	}
+
+	@Override
+	public Object getRendererValue() {
+		return getEditorValue();
+	}
+
+	@Override
+	public void setRendererValue(Object value) {
+		setEditorValue(value);
 	}
 
 	@Override

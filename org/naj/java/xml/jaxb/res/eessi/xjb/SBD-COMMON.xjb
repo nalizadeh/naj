@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings 
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xs:schemaLocation="http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+	xmlns:sbdh="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+	jaxb:version="2.0" if-exists="false">
+
+    <!-- 
+    	Bei der Generierung muss es mindestens ein SED.xsd geben, welches eines der hier angegeben 
+    	JAXB-Binding Definitionen auch benoetigt. Ist dies nicht der Fall bricht der Binding-Compiler 
+    	mit einer Fehlermeldung ab.
+    	Loesung 1: Nicht benoetigte Bindings in diesem Template auskommentieren.
+    	Loesung 2: Immer ein selbst erstelltes SED.xsd mit generieren, welches alle Binding-Definitionen importiert.  
+    	Dadurch ist auch sichergestellt, dass die ObjectFactory im common-Bereich auch alle common-Klassen beinhaltet.
+    	(siehe z.B. ZZZ-4.2.xsd)
+        
+    	@author  Sven Erichsen (P209928, IT.IN.PJ02)
+     -->
+	
+	<jaxb:bindings schemaLocation="../sed/ASec-4.2.xsd">  
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/> 
+        </jaxb:schemaBindings> 
+    </jaxb:bindings>
+    
+    <jaxb:bindings schemaLocation="../sed/SSec-4.2.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common" /> 
+        </jaxb:schemaBindings> 		
+    </jaxb:bindings> 
+ 
+ 	<jaxb:bindings schemaLocation="../sed/SSecNat-4.0.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common" /> 
+        </jaxb:schemaBindings>		
+    </jaxb:bindings> 
+
+    <jaxb:bindings schemaLocation="../sed/XSec-4.2.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common" /> 
+        </jaxb:schemaBindings> 		
+    </jaxb:bindings> 
+
+    <jaxb:bindings schemaLocation="../sed/CC-4.2.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common" /> 
+        </jaxb:schemaBindings> 	
+        <!-- Temporaere Typanpassung, bis das double im 'EESSIAmountType' in ein decimal geaendert wird--> 
+        <jaxb:bindings node="//xs:simpleType[@name='EESSIAmountType']"> 
+            <jaxb:javaType name="java.math.BigDecimal" 
+                           parseMethod="de.tk.biz.comp.datenaustausch.eessi.common.jaxbbinding.Converter.parseDecimal" 
+                           printMethod="de.tk.biz.comp.datenaustausch.eessi.common.jaxbbinding.Converter.printDecimal" /> 
+        </jaxb:bindings> 
+    </jaxb:bindings> 
+
+    <jaxb:bindings schemaLocation="../sed/XAdES.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/> 
+        </jaxb:schemaBindings> 
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="../sed/xmldsig-core-schema.xsd"> 
+        <jaxb:schemaBindings> 
+            <jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/> 
+        </jaxb:schemaBindings> 
+    </jaxb:bindings>	
+
+    <!-- ================================================================================    -->
+	<!-- Umbenennung der XSD-Types, weil wir identische Namen fuer die Interfaces verwenden  -->
+	<!-- Hierfuer wird die JAXB-Extension SCD (schema component designator) verwendet        -->
+	<!-- Der xjc-Compiler muss daher mit dem Parameter -extension aufgerufen werden          -->	
+	<!-- @author  Sven Erichsen (P209928, IT.IN.PJ02)                                        -->                        
+	<!-- ================================================================================    -->
+	<jaxb:bindings scd="/type::sbdh:StandardBusinessDocumentHeader">
+		<jaxb:class name="StandardBusinessDocumentHeaderType"/>        
+	</jaxb:bindings> 	
+
+	 <!-- Header in separates Header-Package generieren -->
+	<jaxb:bindings schemaLocation="../sbdh/StandardBusinessDocumentHeader-1.1_JAXB.xsd">
+		<jaxb:schemaBindings>
+			<jaxb:package
+				name="de.tk.biz.comp.datenaustausch.eessi.xml.document.international.v04m02.header" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+	
+</jaxb:bindings> 

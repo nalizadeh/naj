@@ -5,12 +5,16 @@ package org.naj.java.xml;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -35,9 +39,15 @@ import org.xml.sax.SAXParseException;
  */
 public class JXml {
 
+	/**
+	 * head line in the generated xml file
+	 */
+	private static final String XML_VERS = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
 	private static DocumentBuilderFactory factory;
 	private static DocumentBuilder builder;
 	private static Document document;
+	
 	private Document xmlDocument;
 	private Element element;
 
@@ -110,7 +120,7 @@ public class JXml {
 	 */
 	public Document createDocument(String xml) throws SAXException, IOException, ParserConfigurationException {
 		DocumentBuilder newDocumentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Document document = newDocumentBuilder.parse(new ByteArrayInputStream(xml.getBytes()));
+		Document document = newDocumentBuilder.parse(new ByteArrayInputStream(xml.getBytes("UTF8")));
 		return document;
 	}
 
@@ -177,28 +187,39 @@ public class JXml {
 	}
 
 	/**
-	 * @return  String
+	 * @return  String (Attribues are seperated with ' ')
 	 */
 	public String getAttributes() {
 		String rc = "";
 		NamedNodeMap atrs = element.getAttributes();
 		for (int i = 0; i < atrs.getLength(); ++i) {
 			Node attr = atrs.item(i);
-			rc += attr.getNodeName() + ":" + attr.getNodeValue() + "";
+			rc += attr.getNodeName() + "=\"" + attr.getNodeValue() + "\"";
 			if (i < atrs.getLength() - 1) {
-				rc += ", ";
+				rc += " ";
 			}
 		}
 		return rc;
 	}
 
 	/**
-	 * @param  atrs
+	 * @return  String (Attribues are seperated with ' ')
+	 */
+	public void getAttributesMap(Map<String, String> map) {
+		NamedNodeMap atrs = element.getAttributes();
+		for (int i = 0; i < atrs.getLength(); ++i) {
+			Node attr = atrs.item(i);
+			map.put(attr.getNodeValue(), attr.getNodeName());
+		}
+	}
+
+	/**
+	 * @param  atrs (Attribues are seperated with ',')
 	 */
 	public void setAttributes(String atrs) {
 		String[] at = atrs.split(",");
 		for (String s : at) {
-			String[] ap = s.split(":");
+			String[] ap = s.split("=");
 			if (ap.length == 2) {
 				element.setAttribute(ap[0].trim(), ap[1].trim());
 			}
@@ -207,12 +228,12 @@ public class JXml {
 
 	/**
 	 * @param  element
-	 * @param  atrs
+	 * @param  atrs (Attribues are seperated with ',')
 	 */
 	public static void setAttributes(Element element, String atrs) {
 		String[] at = atrs.split(",");
 		for (String s : at) {
-			String[] ap = s.split(":");
+			String[] ap = s.split("=");
 			if (ap.length == 2) {
 				element.setAttribute(ap[0].trim(), ap[1].trim());
 			}
@@ -262,12 +283,34 @@ public class JXml {
 	 * @return  JXml
 	 */
 	public JXml getChild(String name) {
-		NodeList list = element.getChildNodes();
-		for (int i = 0; i < list.getLength(); i++) {
-			Node node = list.item(i);
-			if (node.getNodeName().equals(name)) {
-				return new JXml((Element) node);
+		if (element != null) {
+			NodeList list = element.getChildNodes();
+			for (int i = 0; i < list.getLength(); i++) {
+				Node node = list.item(i);
+				if (node.getNodeName().equals(name)) {
+					return new JXml((Element) node);
+				}
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param   name
+	 *
+	 * @return  JXml
+	 */
+	public List<JXml> getChilds(String name) {
+		if (element != null) {
+			List<JXml> childs = new ArrayList<JXml>();
+			NodeList list = element.getChildNodes();
+			for (int i = 0; i < list.getLength(); i++) {
+				Node node = list.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(name)) {
+					childs.add(new JXml((Element) node));
+				}
+			}
+			return childs;
 		}
 		return null;
 	}
@@ -297,112 +340,18 @@ public class JXml {
 	 *
 	 * @throws  DOMException
 	 */
-	public void addChild(String name, String attribute, String value) throws DOMException {
-
+	public Element addChild(String name, String attribute, String value) throws DOMException {
 		Element child = document.createElement(name);
 		element.appendChild(child);
 
-		if (!attribute.isEmpty()) {
+		if (attribute != null && !attribute.isEmpty()) {
 			JXml.setAttributes(child, attribute);
 		}
-		if (!value.isEmpty()) {
-			child.setNodeValue(value);
+		if (value != null && !value.isEmpty()) {
+			//child.setNodeValue(value);
+			child.setTextContent(value);
 		}
-	}
-
-	/**
-	 * @param   nodeName
-	 * @param   value
-	 * @param   node
-	 *
-	 * @return  boolean
-	 */
-	public boolean removeNode(String nodeName, String value, Node node) {
-
-		if (node == null) {
-			node = document;
-		}
-
-		String[] names = nodeName.split("\\.");
-
-		NodeList list = node.getChildNodes();
-		for (int i = 0; i < list.getLength(); i++) {
-			Node n = list.item(i);
-			if (n instanceof Element) {
-				Element e = (Element) n;
-				if (names[0].equals(e.getTagName())) {
-					if (names.length > 1) {
-						return removeNode(nodeName.substring(nodeName.indexOf(names[1])), value, n);
-					}
-
-					boolean del = value != null ? value.equals(e.getTextContent()) : true;
-
-					if (del) {
-						e.getParentNode().removeChild(n);
-						return true; // save();
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @return  boolean
-	 */
-	public boolean save() {
-		if (file != null) {
-			Source source = new DOMSource(document);
-			Result result = new StreamResult(file);
-			try {
-
-				Transformer xformer = TransformerFactory.newInstance().newTransformer();
-				xformer.transform(source, result);
-				return true;
-
-			} catch (TransformerConfigurationException e1) {
-				e1.printStackTrace();
-			} catch (TransformerException e2) {
-				e2.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @param  filename
-	 */
-	public void writeToFile(String filename) {
-		try {
-
-			// write the content into xml file
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			DOMSource source = new DOMSource(document);
-			StreamResult result = new StreamResult(new File(filename));
-			transformer.transform(source, result);
-
-		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
-		}
-	}
-
-	/**
-	 * @param   node
-	 * @param   name
-	 *
-	 * @return  Node
-	 */
-	public static Node findAttribute(Node node, String name) {
-		NamedNodeMap attrs = node.getAttributes();
-
-		for (int i = 0; i < attrs.getLength(); i++) {
-			Node item = attrs.item(i);
-			if (item.getNodeName().equals(name)) {
-				return item;
-			}
-		}
-		return null;
+		return child;
 	}
 
 	/**
@@ -459,6 +408,177 @@ public class JXml {
 		}
 	}
 
+	/**
+	 * @param   name
+	 * @param   attribute
+	 * @param   value
+	 *
+	 * @throws  DOMException
+	 */
+	public JXml addNode(JXml node) throws DOMException {
+		Element elem = document.createElement(node.getName());
+
+		String atr = node.getAttributes();
+		String val = node.getValue();
+		if (atr != null && !atr.isEmpty()) {
+			JXml.setAttributes(elem, atr);
+		}
+		if (val != null && !val.isEmpty()) {
+			elem.setNodeValue(val);
+		}
+
+		JXml child = new JXml(elem);
+		element.appendChild(elem);
+		
+//		JXml child = new JXml(addChild(node.getName(), node.getAttributes(), node.getValue()));
+//		for (JXml ch : node.getChilds()) {
+//			child.addNode(ch);
+//		}
+		return child;
+	}
+
+	/**
+	 * @param   nodeName
+	 * @param   value
+	 * @param   node
+	 *
+	 * @return  boolean
+	 */
+	public boolean removeNode(String nodeName, String value, Node node) {
+
+		if (node == null) {
+			node = document;
+		}
+
+		String[] names = nodeName.split("\\.");
+
+		NodeList list = node.getChildNodes();
+		for (int i = 0; i < list.getLength(); i++) {
+			Node n = list.item(i);
+			if (n instanceof Element) {
+				Element e = (Element) n;
+				if (names[0].equals(e.getTagName())) {
+					if (names.length > 1) {
+						return removeNode(nodeName.substring(nodeName.indexOf(names[1])), value, n);
+					}
+
+					boolean del = value != null ? value.equals(e.getTextContent()) : true;
+
+					if (del) {
+						e.getParentNode().removeChild(n);
+						return true; // save();
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param   node
+	 * @param   name
+	 *
+	 * @return  Node
+	 */
+	public static Node findAttribute(Node node, String name) {
+		NamedNodeMap attrs = node.getAttributes();
+
+		for (int i = 0; i < attrs.getLength(); i++) {
+			Node item = attrs.item(i);
+			if (item.getNodeName().equals(name)) {
+				return item;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @return  boolean
+	 */
+	public boolean save() {
+		if (file != null) {
+			Source source = new DOMSource(document);
+			Result result = new StreamResult(file);
+			try {
+
+				Transformer xformer = TransformerFactory.newInstance().newTransformer();
+				xformer.transform(source, result);
+				return true;
+
+			} catch (TransformerConfigurationException e1) {
+				e1.printStackTrace();
+			} catch (TransformerException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @param  filename
+	 */
+	public boolean writeToFile(String filename) {
+		try {
+
+			// write the content into xml file
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			DOMSource source = new DOMSource(document);
+			StreamResult result = new StreamResult(new File(filename));
+			transformer.transform(source, result);
+			return true;
+
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		}
+		return false;
+	}
+
+	public final String toXml(Node node) {
+
+		StringBuffer sb = new StringBuffer();
+		
+		if (node == null) {
+			node = element;
+			sb.append(XML_VERS + System.lineSeparator());
+		}
+		
+		sb.append("<" + node.getNodeName());
+		if (node.hasAttributes()) {
+			sb.append(" ");
+			NamedNodeMap attrs = node.getAttributes();
+			for (int i = 0; i < attrs.getLength(); i++) {
+				Node item = attrs.item(i);
+				sb.append(item.getNodeName() + "=\"" + item.getNodeValue() + (i < attrs.getLength()-1 ? "\" " : "\""));
+			}
+		}
+		sb.append(">");
+		Node tn = node.getFirstChild();
+		if (tn != null && tn.getNodeType() == Node.TEXT_NODE) {
+			sb.append(tn.getNodeValue());
+		}
+		
+		NodeList childs = node.getChildNodes();
+		for (int i = 0; i < childs.getLength(); i++) {
+			Node n = childs.item(i);
+			if (n.getNodeType() == Node.ELEMENT_NODE) {
+				sb.append(toXml(n));
+			}
+		}
+		sb.append("</" + node.getNodeName() + ">");
+
+		return sb.toString();
+	}
+		
+	public final void print() throws Exception {
+        Transformer tf = TransformerFactory.newInstance().newTransformer();
+        tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        tf.setOutputProperty(OutputKeys.INDENT, "yes");
+        Writer out = new StringWriter();
+        tf.transform(new DOMSource(xmlDocument), new StreamResult(out));
+        System.out.println(out.toString());
+    }
+	
 	/**
 	 * @param  node
 	 * @param  ind
@@ -604,10 +724,18 @@ public class JXml {
 
 		//JXml ma = new JXml("D:/works/kiss24/manager/unfall.xml");
 		try {
-			JXml ma = new JXml(new File("D:\\works\\kiss24\\manager\\mtext\\datenmodelle\\unfall\\Unfall.datamodel"));
+			JXml ma = new JXml(new File("D:\\works\\Erv\\XJustiz_2_4_0_XSD\\xjustiz_0020_cl_gerichte_2_6.xsd"));
+			
+			JXml val = ma.getChild("xs:complexType").getChild("xs:annotation").getChild("xs:appinfo").getChild("listName");
+			System.out.println(val.getValue());
+			
+			val = ma.getNode("xs:schema.xs:complexType.xs:complexContent.xs:restriction.xs:sequence.xs:element.xs:simpleType.xs:restriction");
+			List<JXml> enums = val.getChilds("xs:enumeration");
+			System.out.println(enums.size());
 
+			//JXml ma = new JXml(new File("D:\\works\\kiss24\\manager\\mtext\\datenmodelle\\unfall\\Unfall.datamodel"));
 			//JXml ma = new JXml("W:\\Projekte\\TK-Kiss24-Migration\\tools\\manager\\mtext\\xml\\unfall.xml");
-			ma.echoNode2(null, "");
+			//ma.echoNode2(null, "");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

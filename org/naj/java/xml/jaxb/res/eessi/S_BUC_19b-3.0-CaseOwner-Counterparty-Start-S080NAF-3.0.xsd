@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+xmlns:sed="https://www.gkv-spitzenverband.de/4_0/S080NAF" 
+targetNamespace="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh" 
+elementFormDefault="qualified" 
+version="4.0.0">
+
+<xs:redefine schemaLocation="../sbdh/BasicTypes-1.1.xsd">
+  <xs:simpleType name="SedType">
+    <xs:restriction base="SedType">
+      <xs:enumeration value="S080NAF"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="SedSchemaVersion">
+    <xs:restriction base="SedSchemaVersion">
+      <xs:pattern value="4.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="BusinessServiceName">
+    <xs:restriction base="BusinessServiceName">
+      <xs:pattern value="S_BUC_19b:4.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CaseAction">
+    <xs:restriction base="CaseAction">
+      <xs:pattern value="Start"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ContactTypeIdentifierSender">
+    <xs:restriction base="ContactTypeIdentifierSender">
+      <xs:enumeration value="CaseOwner"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ContactTypeIdentifierReceiver">
+    <xs:restriction base="ContactTypeIdentifierReceiver">
+      <xs:enumeration value="Counterparty"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:redefine>
+
+<xs:import namespace="https://www.gkv-spitzenverband.de/4_0/S080NAF" schemaLocation="../sed/S080NAF-4.0.xsd"/>
+<xs:include schemaLocation="../sbdh/StandardBusinessDocumentHeader-1.1.xsd"/>
+<xs:complexType name="StandardBusinessDocumentHeader">
+  <xs:sequence>
+    <xs:element name="HeaderVersion" type="xs:string" fixed="1.1"/>
+    <xs:element name="Sender" type="PartnerSender"/>
+    <xs:element name="Receiver" type="PartnerReceiver"/>
+    <xs:element name="DocumentIdentification" type="DocumentIdentification"/>
+    <xs:element name="Manifest" type="Manifest" minOccurs="0" maxOccurs="0"/>
+    <xs:element name="BusinessScope" type="BusinessScope"/>
+  </xs:sequence>
+</xs:complexType>
+<xs:complexType name="StandardBusinessDocument">
+  <xs:sequence>
+    <xs:element ref="StandardBusinessDocumentHeader"/>
+    <xs:element ref="sed:S080NAF"/>
+  </xs:sequence>
+</xs:complexType>
+  <xs:element name="StandardBusinessDocumentHeader" type="StandardBusinessDocumentHeader"/>
+  <xs:element name="StandardBusinessDocument" type="StandardBusinessDocument"/>
+</xs:schema>

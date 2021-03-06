@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sedH070:H070 xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:CC="http://ec.europa.eu/eessi/ns/4_2/CC"
+ xmlns:SSec="http://ec.europa.eu/eessi/ns/4_2/SSec"
+ xmlns:ccts="urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2"
+ xmlns:HSec="http://ec.europa.eu/eessi/ns/4_2/HSec"
+ xmlns:sedH070="http://ec.europa.eu/eessi/ns/4_2/H070"
+ xmlns:ns0="http://uri.etsi.org/01903/v1.3.2#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://ec.europa.eu/eessi/ns/4_2/H070 file:/X:/Projekte/EESSI_EU-Datenaustausch/Staging/4.2.0_4.0.1/international/sed/H070-4.2.xsd">
+    <Person>
+        <PersonIdentification>
+            <familyName>familyName0</familyName>
+            <forename>forename0</forename>
+            <dateBirth>2006-05-04</dateBirth>
+            <sex>
+                <value>01</value>
+            </sex>
+        </PersonIdentification>
+    </Person>
+    <NotificationDeath>
+        <dateDeath>2006-05-04</dateDeath>
+    </NotificationDeath>
+</sedH070:H070>

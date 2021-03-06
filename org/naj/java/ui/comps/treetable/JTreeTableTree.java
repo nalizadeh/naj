@@ -26,8 +26,6 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	private DefaultTreeModel model;
 	private int paintingRow;
 
-	private List<JTreeTableNode> lastSelection;
-
 	/**
 	 * @param
 	 *
@@ -42,7 +40,6 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 		this.originRoot = new JTreeTableNode();
 		this.originRoot.setNodeParent(null);
 		this.model = new DefaultTreeModel(originRoot);
-		this.lastSelection = new ArrayList<JTreeTableNode>();
 
 		setModel(model);
 		setEditable(false);
@@ -82,7 +79,7 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 */
 	protected void init(List<? extends JTreeTableNode> nodes) {
 		clear();
-		originRoot.initChilds(nodes);
+		originRoot.initChildren(nodes);
 		prepareData();
 	}
 
@@ -96,7 +93,7 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 * @see
 	 */
 	protected void update(List<? extends JTreeTableNode> nodes) {
-		originRoot.updateChilds(nodes);
+		originRoot.updateChildren(nodes);
 		prepareData();
 	}
 
@@ -111,7 +108,7 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 */
 	protected void update(JTreeTableNode rootNode, boolean setRoot) {
 		if (setRoot) {
-			this.originRoot = rootNode;
+			originRoot = rootNode;
 		} else {
 			clear();
 			originRoot.addChild(rootNode);
@@ -154,12 +151,6 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 		}
 
 		model.setRoot(root);
-
-		if (lastSelection != null) {
-			root.select(this, lastSelection);
-			lastSelection.clear();
-		}
-
 		reload();
 	}
 
@@ -173,13 +164,6 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 * @see
 	 */
 	protected void clear() {
-		lastSelection.clear();
-		JTreeTableNode[] nodes = treetable.getSelectedNodes();
-		if (nodes != null) {
-			for (JTreeTableNode node : nodes) {
-				lastSelection.add(node);
-			}
-		}
 		originRoot.clear(true);
 		model.setRoot(originRoot);
 		reload();
@@ -235,8 +219,13 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 */
 	protected void sort(Comparator<Object> comparator, int columnIndex, int sortDirection) {
 
-		JTreeTableNode node = treetable.getSelectedNode();
-		TreePath path = node == null ? null : new TreePath(node.getPath());
+		List<JTreeTableNode> lastSelection = new ArrayList<JTreeTableNode>();
+		JTreeTableNode[] nodes = treetable.getSelectedNodes();
+		if (nodes != null) {
+			for (JTreeTableNode node : nodes) {
+				lastSelection.add(node);
+			}
+		}
 
 		Enumeration<TreePath> expandeds = getExpandedDescendants(new TreePath(root));
 		List<TreeNode> checkeds = getCheckedItems();
@@ -254,16 +243,14 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 			expandPath((TreePath) expandeds.nextElement());
 		}
 
-		// select the last selected row
-		if (path != null) {
-			setSelectionPath(path);
-		}
+		// select the last selected rows
+		root.select(this, lastSelection);
 
 		// check all last checkeds
 		if (checkeds != null && !checkeds.isEmpty()) {
 			check(checkeds);
 		}
-
+		
 		revalidate();
 	}
 
@@ -326,8 +313,8 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 			filteredNode = node.cloneNode(false);
 		}
 
-		if (filteredNode != null) {
-			for (JTreeTableNode o : node.getChilds()) {
+		if (filteredNode != null && node.hasChild()) {
+			for (JTreeTableNode o : node.getChildren()) {
 				JTreeTableNode cn = doFilter(o, columnIndex, fdata);
 				if (cn != null) {
 					filteredNode.addChild(cn);
@@ -667,8 +654,8 @@ public class JTreeTableTree extends JTreeTableCheckboxTree implements JTreeTable
 	 *
 	 * @see
 	 */
-	protected void search(String text, List<JTreeTableNode> rows) {
-		root.search(text, rows);
+	protected void search(String text, List<JTreeTableNode> rows, boolean caseSensitive) {
+		root.search(text, rows, caseSensitive);
 	}
 
 	/**

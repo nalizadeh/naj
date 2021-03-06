@@ -1,0 +1,446 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema 
+    targetNamespace='http://ec.europa.eu/eessi/ns/4_2/ASec'
+	elementFormDefault='unqualified'
+    version='4.2.0' xmlns:ASec='http://ec.europa.eu/eessi/ns/4_2/ASec'
+    xmlns:CC='http://ec.europa.eu/eessi/ns/4_2/CC'
+    xmlns:ccts='urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2' 
+	xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.0">
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<jaxb:schemaBindings>
+				<jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/>
+			</jaxb:schemaBindings>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+    <xsd:import namespace='http://ec.europa.eu/eessi/ns/4_2/CC' schemaLocation='CC-4.2.xsd'/>
+    <xsd:complexType name='LAdditionalInformationPersonType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>37ED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1' name='nationality' type='CC:EESSINationalityMultipleType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>3DED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:unique name='sedA001UniqueConstraint1'>
+                    <xsd:selector xpath='value'/>
+                    <xsd:field xpath='.'/>
+                </xsd:unique>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LPersonBlockLimitedNationalityType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>36ED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='PersonIdentification' type='CC:EESSIPersonType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>9792C09B-9A5F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='AdditionalInformationPerson' type='ASec:LAdditionalInformationPersonType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>55ED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LAddressWithType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>9192C09B-9A5F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1' name='type' type='CC:EESSIAddressType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>9492C09B-9A5F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1' name='Address' type='CC:EESSIAddressWorldType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>9892C09B-9A5F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        <ccts:Definition>Provide information to allow an accurate identification of the address.</ccts:Definition>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LAddressesType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>3FEBE0DF-F465-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='unbounded' minOccurs='1'
+                name='Address' type='ASec:LAddressWithType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>40EBE0DF-F465-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LIdentificationEmployersType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>CA630C8A-0066-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='unbounded' minOccurs='0'
+                name='Employer' type='CC:EESSIOrganisationType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>D4630C8A-0066-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        <ccts:Definition>An organisation in this context can include a large variety of entities or persons having a status, rights and obligations defined by law. It can include for example: employers, self-employed persons etc.</ccts:Definition>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LSelfEmploymentsType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>BDF7B291-A45F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='unbounded' minOccurs='0'
+                name='SelfEmployment' type='CC:EESSIOrganisationType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>E8F7B291-A45F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        <ccts:Definition>An organisation in this context can include a large variety of entities or persons having a status, rights and obligations defined by law. It can include for example: employers, self-employed persons etc.</ccts:Definition>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LPlaceWorkType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>3AED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='companyNameVesselName' type='CC:EESSIMediumStringType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>43ED5926-3A5E-E611-80CA-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='0'
+                name='flagStateHomeBase' type='CC:EESSIMediumStringType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>AEF3BEAE-1416-E711-80D3-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1' name='Address' type='CC:EESSIAddressWorldType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>B1908EB7-F55F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                        <ccts:Definition>Provide information to allow an accurate identification of the address.</ccts:Definition>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='0'
+                name='noFixedAddressInStateWorkIndicator' type='CC:EESSIYesNoType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>6B546413-736B-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LPlacesWorkType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>351545AD-965F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='unbounded' minOccurs='0'
+                name='PlaceWork' type='ASec:LPlaceWorkType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>571545AD-965F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LAdditionalInformationType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>B2C59C7F-9D5F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='0'
+                name='additionalInformation' type='CC:EESSIVeryLongStringType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>B7C59C7F-9D5F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LAmendingDecisionType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>1B09D15B-AFF9-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='InitialDecision' type='CC:EESSIYesNoFixedNoType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>C94DE088-9335-E711-80D4-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='datePreviousDecision' type='CC:EESSIBusinessDateType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>1C09D15B-AFF9-E611-80D3-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LConditionalDecisionLAType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>B6D2F459-ADF9-E611-80D3-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:choice>
+                <xsd:element maxOccurs='1' minOccurs='1'
+                    name='InitialDecision' type='CC:EESSIYesNoFixedYesType'>
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang='en'>
+                            <ccts:DictionaryEntryName>3CBBE533-9435-E711-80D4-000D3A22E8CD</ccts:DictionaryEntryName>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs='1' minOccurs='1'
+                    name='AmendingDecision' type='ASec:LAmendingDecisionType'>
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang='en'>
+                            <ccts:DictionaryEntryName>3DBBE533-9435-E711-80D4-000D3A22E8CD</ccts:DictionaryEntryName>
+                        </xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LDecisionLAType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>B9F7B291-A45F-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue/>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='1' minOccurs='0' name='Decision' type='ASec:LConditionalDecisionLAType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>1E09D15B-AFF9-E611-80D3-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='memberStateWhichLegislationApplies' type='CC:EESSIEUEFTACountryType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>C4F7B291-A45F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='theDecisionAppliesForDurationActivityIndicator' type='CC:EESSIYesNoType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>C3F7B291-A45F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element maxOccurs='1' minOccurs='1'
+                name='PeriodForWhichDecisionApplies' type='CC:EESSIOngoingPeriodType'>
+                <xsd:annotation>
+                    <xsd:documentation xml:lang='en'>
+                        <ccts:DictionaryEntryName>E2F7B291-A45F-E611-80CB-000D3A22E8CD</ccts:DictionaryEntryName>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name='LArticlesIA005A006MultipleType'>
+        <xsd:annotation>
+            <xsd:documentation xml:lang='en'>
+                <ccts:UniqueID>7475BF27-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                <ccts:ObjectClassQualifierTerm>SC.LegislationApplicable.ENUM</ccts:ObjectClassQualifierTerm>
+                <ccts:BusinessProcessContextValue>EESSI</ccts:BusinessProcessContextValue>
+                <ccts:OfficialConstraintContextValue>
+                    <CodeListEntry>
+                        <ccts:UniqueID>C5CAEE31-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>01</value>
+                        <definition>11(2)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>C6CAEE31-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>02</value>
+                        <definition>11(3)(a)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>C7CAEE31-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>03</value>
+                        <definition>11(4)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>2367973A-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>04</value>
+                        <definition>11(5)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>2467973A-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>05</value>
+                        <definition>12(1)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>2567973A-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>06</value>
+                        <definition>12(2)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>FD982F43-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>07</value>
+                        <definition>13(1)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>FE982F43-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>08</value>
+                        <definition>13(2)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>EDB92F4B-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>09</value>
+                        <definition>13(3)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>EEB92F4B-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>10</value>
+                        <definition>13(4)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>37508251-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>11</value>
+                        <definition>15</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>38508251-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>12</value>
+                        <definition>16</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>39508251-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>13</value>
+                        <definition>87(8)</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>81B6EF59-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>14</value>
+                        <definition>87a</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>82B6EF59-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>15</value>
+                        <definition>14(11) R. 987/2009</definition>
+                    </CodeListEntry>
+                    <CodeListEntry>
+                        <ccts:UniqueID>48DC9260-F86D-E611-80CB-000D3A22E8CD</ccts:UniqueID>
+                        <value>99</value>
+                        <definition>Other</definition>
+                    </CodeListEntry>
+                </ccts:OfficialConstraintContextValue>
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element maxOccurs='unbounded' minOccurs='1' name='value'>
+                <xsd:simpleType>
+                    <xsd:restriction base='xsd:string'>
+                        <xsd:pattern value='(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|99){1}'/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

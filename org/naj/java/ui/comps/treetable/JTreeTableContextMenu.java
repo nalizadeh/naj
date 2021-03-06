@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
@@ -27,6 +28,10 @@ public class JTreeTableContextMenu extends JPopupMenu {
 	private JTreeTablePopupAction columnsConfAction;
 	private JTreeTablePopupAction copyAction;
 	private JTreeTablePopupAction pasteAction;
+	private JTreeTablePopupAction copyRowAction;
+	private JTreeTablePopupAction pasteRowAction;
+	private JTreeTablePopupAction copyColAction;
+	private JTreeTablePopupAction pasteColAction;
 
 	public JTreeTableContextMenu(JTreeTable table) {
 		this.table = table;
@@ -73,7 +78,11 @@ public class JTreeTableContextMenu extends JPopupMenu {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JTreeTable.copySelectedData(table);
+					if (menuEvent != null) {
+						int evRow = table.rowAtPoint(menuEvent.getPoint());
+				        int evCol = table.columnAtPoint(menuEvent.getPoint());
+						table.copySelectedData(table, evRow, evCol);
+					}
 				}
 			};
 
@@ -83,10 +92,52 @@ public class JTreeTableContextMenu extends JPopupMenu {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JTreeTable.pasteSelectedData(table);
+					if (menuEvent != null) {
+						int evRow = table.rowAtPoint(menuEvent.getPoint());
+				        int evCol = table.columnAtPoint(menuEvent.getPoint());
+						table.pasteSelectedData(table, evRow, evCol);
+					}
 				}
 			};
 
+		copyRowAction =
+			new JTreeTablePopupAction("Zeile kopieren", JTreeTableProperties.TT_COP_ICON, "Zeile kopieren", new Integer(KeyEvent.VK_C)) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					table.copySelectedData(table, -1, -1);
+				}
+			};
+
+		pasteRowAction =
+			new JTreeTablePopupAction("Zeile einfügen", JTreeTableProperties.TT_PAS_ICON, "Zeile einfügen", new Integer(KeyEvent.VK_V)) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					table.pasteSelectedData(table, -1, -1);
+				}
+			};
+					
+		copyColAction =
+			new JTreeTablePopupAction("Spalte kopieren", JTreeTableProperties.TT_COP_ICON, "Spalte kopieren", new Integer(KeyEvent.VK_C)) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				}
+			};
+
+		pasteColAction =
+			new JTreeTablePopupAction("Spalte einfügen", JTreeTableProperties.TT_PAS_ICON, "Spalte einfügen", new Integer(KeyEvent.VK_V)) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				}
+			};
+					
 		columnsConfAction =
 			new JTreeTablePopupAction(
 				"Spalten ein-/ausblenden...",
@@ -122,12 +173,25 @@ public class JTreeTableContextMenu extends JPopupMenu {
 		table.registerKeyboardAction(keyListener, "Copy", copy, JComponent.WHEN_FOCUSED);
 		table.registerKeyboardAction(keyListener, "Paste", paste, JComponent.WHEN_FOCUSED);
 
+		copyColAction.setEnabled(false);
+		pasteColAction.setEnabled(false);
+
+		JMenu copyMenu = new JMenu("Kopieren");
+		copyMenu.add(copyAction);
+		copyMenu.add(copyRowAction);
+		copyMenu.add(copyColAction);
+		
+		JMenu pasteMenu = new JMenu("Einfügen");
+		pasteMenu.add(pasteAction);
+		pasteMenu.add(pasteRowAction);
+		pasteMenu.add(pasteColAction);
+
 		add(expandAction);
 		add(collapseAction);
 		add(showDetailsAction);
 		addSeparator();
-		add(copyAction);
-		add(pasteAction);
+		add(copyMenu);
+		add(pasteMenu);
 		addSeparator();
 		add(columnsConfAction);
 	}

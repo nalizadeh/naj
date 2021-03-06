@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns:response xmlns:ns="http://www.forum-datenaustausch.ch/invoice" language="fr">
+    <ns:processing>
+        <ns:transport to="" from=""></ns:transport>
+    </ns:processing>
+    <ns:payload response_timestamp="12345">
+        <ns:credit request_date="2012-05-13T01:02:03" request_timestamp="67890" request_id="abc"/>
+    </ns:payload>
+</ns:response>

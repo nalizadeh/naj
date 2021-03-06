@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:ccts="urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2" 
+xmlns:CC="http://ec.europa.eu/eessi/ns/4_2/CC" 
+xmlns:SSec="http://ec.europa.eu/eessi/ns/4_2/SSec" 
+xmlns:SSecNat="https://www.gkv-spitzenverband.de/3_0/SSecNat" 
+xmlns:sedS080NAF="https://www.gkv-spitzenverband.de/4_0/S080NAF" 
+targetNamespace="https://www.gkv-spitzenverband.de/4_0/S080NAF" version="4.0.0"
+xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+jaxb:version="2.0">
+
+<xsd:annotation>
+	<xsd:appinfo>
+	   <jaxb:schemaBindings>
+			<jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.s080naf"/>
+		</jaxb:schemaBindings>
+	 </xsd:appinfo>
+</xsd:annotation>
+
+<xsd:import namespace="http://ec.europa.eu/eessi/ns/4_2/CC" schemaLocation="CC-4.2.xsd"/>
+<xsd:import namespace="http://ec.europa.eu/eessi/ns/4_2/SSec" schemaLocation="SSec-4.2.xsd"/>
+<xsd:import namespace="https://www.gkv-spitzenverband.de/3_0/SSecNat" schemaLocation="SSecNat-3.0.xsd"/>
+<xsd:complexType name="S080NAF"><xsd:annotation>
+<xsd:appinfo>Änderung 2.0.0</xsd:appinfo>
+<xsd:documentation xml:lang="de">
+Ausländische Forderungen nach tatsächlichen Aufwendungen</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="GlobalNoteCLA" type="sedS080NAF:GlobalNoteClaimType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Erstattungsforderung (CLA)
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="IndividualCLAs" type="sedS080NAF:IndividualClaimsType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Einzelne CLAs
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+<xsd:attribute name="sedPackage" type="xsd:string"/>
+<xsd:attribute name="sedGVer" type="xsd:int"/>
+<xsd:attribute name="sedVer" type="xsd:int"/>
+</xsd:complexType>
+<xsd:complexType name="GlobalNoteClaimType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="country" type="CC:EESSIEUEFTACountryType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Staat für den eingereicht wird
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="GlobalCLAReferenceDebtorLiaisonBody" type="CC:EESSICRUniqueidentifierType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Globale CLA-Referenz der Verbindungsstelle des leistungspflichtigen Mitgliedstaats (Vorgangsnummer DVKA)
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="totalNumberIndividualClaims" type="CC:EESSICRIndividualClaimsCountType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Gesamtzahl der Einzelforderungen
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="TotalAmountBenefits" type="SSecNat:ForeignCurrencyPayment" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Gesamtbetrag der Leistungen
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="halfYearNumberAtCreditorInstitution" type="CC:EESSIHalfYearNumberType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Halbjahr, in dem die Forderung des Leistungserbringers in die Rechnungsführung des forderungsberechtigten Trägers aufgenommen wurde.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="financialYearNumberAtCreditorInstitution" type="CC:EESSIYearType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Rechnungsjahr der Aufnahme in die Rechnungsführung des forderungsberechtigten Trägers.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="DateofReceiptbyDebtorLiaisonBody" type="CC:EESSIBusinessDateType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Eingangsdatum bei der Verbindungsstelle des leistungspflichtigen Mitgliedstaats (DVKA)
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="DateOfSubmissiontoDebtorInstitution" type="CC:EESSIBusinessDateType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Datum der Übermittlung
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="NoteonCLA" type="CC:EESSIVeryLongStringType" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Neu 4.0.17_2.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Hinweis zur Sendung
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="IndividualClaimsType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="IndividualCLA" type="sedS080NAF:IndividualClaimType" minOccurs="1" maxOccurs="unbounded">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Einzelne CLA
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="IndividualClaimType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="IDCreditorInstitution" type="CC:EESSIInstitutionType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Kennung des forderungsberechtigten Trägers
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="IDDebtorInstitution" type="CC:EESSIInstitutionType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Kennung des leistungspflichtigen Trägers
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="References" type="sedS080NAF:ReferencesType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Bezug
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="PersonReceivingBenefits" type="CC:EESSIPersonInfoType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Person, die Leistungen bezieht
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="EntitlementDocument" type="sedS080NAF:SicknessEntitlementType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Anspruchsbescheinigung
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="TotalIndividualAmountOfBenefits" type="SSecNat:ForeignCurrencyPayment" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Gesamtbetrag der einzelnen Leistungen
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="ProvidedBenefits" type="SSec:SBenefitsInKindType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Erbrachte Leistungen
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="copyFlag" type="SSecNat:NationalMarker" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 2.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Nationale Kennzeichnung
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ReferencesType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="GlobalCLAReferenceDebtorLiaisonBody" type="CC:EESSICRUniqueidentifierType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Globale CLA-Referenz der Verbindungsstelle des leistungspflichtigen Mitgliedstaats (Vorgangsnummer DVKA)
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="IndividualCLAReferenceDebtorLiaisonBody" type="CC:EESSICRUniqueidentifierType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Nummer der einzelnen CLA der Verbindungsstelle des leistungspflichtigen Mitgliedstaats (Kostenrechnungsnummer DVKA)
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="dateCreditorInstitutionRecordedCLA" type="CC:EESSIBusinessDateType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Datum der Verbuchung der Forderung beim Träger des Wohn- oder Aufenthaltsorts.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="SicknessEntitlementType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="document" type="sedS080NAF:SicknessEntitlementDocumentCodeContentType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+Dokument
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+<xsd:choice>
+  <xsd:element name="FillInProvisionalReplacementCertificateEHIC" type="sedS080NAF:ProvisionalReplacementCertificateEHICType" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Füllen Sie bitte
+folgendes Feld aus, wenn „Anspruchsbescheinigung“ = „01 - EHIC -Europäische Krankenversicherungskarte“:
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="FillInProvisionalReplacementCertificatePeriod" type="sedS080NAF:ProvisionalReplacementCertificatePeriodType" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 4.0.17_3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Füllen Sie bitte folgende Felder aus,wenn „Anspruchsbescheinigung“ = „02 -Provisorische Ersatzbescheinigung“, „04- S2 Anspruch auf geplante Behandlung“,„08 - S045 Anspruchsbescheinigung- vorübergehender Aufenthalt“ oder„12 - E112 Bescheinigung über dieWeitergewährung der Leistungen der Kranken-und Mutterschaftsversicherung“:
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="FillInProvisionalReplacementCertificateOther" type="sedS080NAF:ProvisionalReplacementCertificateOtherType" minOccurs="0" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 1.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Füllen Sie bitte folgende Felder aus, wenn „Anspruchsbescheinigung“ ungleich „01 - EHIC - Europäische Krankenversicherungskarte“, „02 - Provisorische Ersatzbescheinigung“, „04 - S2 Anspruch auf geplante Behandlung“, „08 - S045 Anspruchsbescheinigung - vorübergehender Aufenthalt“ oder „12 - E112 Bescheinigung über die Weitergewährung der Leistungen der Kranken- und Mutterschaftsversicherung“:
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:choice>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="SicknessEntitlementDocumentCodeContentType"><xsd:annotation>
+<xsd:appinfo>Änderung 4.0.17_2.1.2</xsd:appinfo>
+<xsd:documentation xml:lang="de">
+<ccts:OfficialConstraintContextValue>
+<CodeListEntry>
+<value>01</value><definition>EHIC - EuropäischeKrankenversicherungskarte</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>02</value><definition>ProvisorischeErsatzbescheinigung</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>03</value><definition>S1 Eintragung zwecks Inanspruchnahme des Krankenversicherungsschutzes</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>04</value><definition>S2 Anspruch auf eine geplante Behandlung</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>05</value><definition>S3 Medizinische Behandlung eines ehemaligen Grenzgängers/einer ehemaligen Grenzgängerin im Staat der vormaligen Erwerbstätigkeit</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>06</value><definition>S037 Antwort auf die Beantragung einer ergänzendenAnspruchsbescheinigung - geplante Behandlung</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>07</value><definition>S072 Anspruchsbescheinigung - Wohnort</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>08</value><definition>S045 Anspruchsbescheinigung - vorübergehender Aufenthalt</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>09</value><definition>S008 Anspruchsbescheinigung - Ehemalige/r Grenzgänger/in - Familienangehörige/r eines ehemaligen Grenzgängers/einer ehemaligen Grenzgängerin</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>10</value><definition>E106 Anspruchsbescheinigung - Wohnort</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>11</value><definition>E109 Bescheinigung über die Eintragung der Familienangehörigen der beschäftigten oder selbstständig erwerbstätigen Person</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>12</value><definition>E112 Bescheinigung über die Weitergewährung der Leistungen der Kranken-/Mutterschaftsversicherung</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>13</value><definition>E120 Bescheinigung des Sachleistungsanspruchs für Rentenantragsteller/-innen und ihre Familienangehörigen</definition>
+</CodeListEntry>
+<CodeListEntry>
+<value>14</value><definition>E121 Bescheinigung über die Eintragung der Rentenberechtigten oder ihrer Familienangehörigen und die Führung der Verzeichnisse</definition>
+</CodeListEntry>
+</ccts:OfficialConstraintContextValue></xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="value" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+01 - EHIC - EuropäischeKrankenversicherungskarte
+02 - ProvisorischeErsatzbescheinigung 
+03 - S1 Eintragung zwecks Inanspruchnahme des Krankenversicherungsschutzes
+04 - S2 Anspruch auf eine geplante Behandlung
+05 - S3 Medizinische Behandlung eines ehemaligen Grenzgängers/einer ehemaligen Grenzgängerin im Staat der vormaligen Erwerbstätigkeit
+06 - S037 Antwort auf die Beantragung einer ergänzendenAnspruchsbescheinigung - geplante Behandlung 
+07 - S072 Anspruchsbescheinigung - Wohnort 
+08 - S045 Anspruchsbescheinigung - vorübergehender Aufenthalt 
+09 - S008 Anspruchsbescheinigung - Ehemalige/r Grenzgänger/in - Familienangehörige/r eines ehemaligen Grenzgängers/einer ehemaligen Grenzgängerin 
+10 - E106 Anspruchsbescheinigung - Wohnort 
+11 - E109 Bescheinigung über die Eintragung der Familienangehörigen der beschäftigten oder selbstständig erwerbstätigen Person 
+12 - E112 Bescheinigung über die Weitergewährung der Leistungen der Kranken-/Mutterschaftsversicherung
+13 - E120 Bescheinigung des Sachleistungsanspruchs für Rentenantragsteller/-innen und ihre Familienangehörigen
+14 - E121 Bescheinigung über die Eintragung der Rentenberechtigten oder ihrer Familienangehörigen und die Führung der Verzeichnisse
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType><xsd:restriction base="xsd:string">
+      <xsd:pattern value="(01|02|03|04|05|06|07|08|09|10|11|12|13|14){1}"/></xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ProvisionalReplacementCertificateEHICType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="eHICNumber" type="CC:EESSIEHICType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="de">
+EHIC-Nummer
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="EntitlementValidityPeriod" type="CC:EESSIPeriodEHICType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Gültigkeitszeitraum des Anspruchs
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ProvisionalReplacementCertificatePeriodType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="EntitlementValidityPeriod" type="CC:EESSIPeriodType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Gültigkeitszeitraum des Anspruchs
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="dateIssue" type="CC:EESSIBusinessDateType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 1.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Ausstellungsdatum
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ProvisionalReplacementCertificateOtherType"><xsd:annotation>
+<xsd:documentation xml:lang="de">
+</xsd:documentation></xsd:annotation><xsd:sequence>
+  <xsd:element name="EntitlementValidityPeriod" type="CC:EESSIOngoingPeriodType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 3.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Gültigkeitszeitraum des Anspruchs
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="dateIssue" type="CC:EESSIBusinessDateType" minOccurs="1" maxOccurs="1">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 1.0.0</xsd:appinfo>
+      <xsd:documentation xml:lang="de">
+Ausstellungsdatum
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+  <xsd:element name="S080NAF" type="sedS080NAF:S080NAF">
+    <xsd:annotation>
+      <xsd:appinfo>Änderung 2.0.0</xsd:appinfo>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="IndividualCLA" type="sedS080NAF:IndividualClaimType">
+    <xsd:annotation>
+      <xsd:appinfo>Hinzugefügt durch Team-EESSI (S.Erichsen)</xsd:appinfo>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbdh:StandardBusinessDocument xmlns:CC="http://ec.europa.eu/eessi/ns/4_2/CC"
+ xmlns:SSec="http://ec.europa.eu/eessi/ns/4_2/SSec"
+ xmlns:ccts="urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2"
+ xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+ xmlns:sedS073="http://ec.europa.eu/eessi/ns/4_2/S073"
+ xmlns:sbdh="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh"
+ xmlns:ns0="http://uri.etsi.org/01903/v1.3.2#"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://eessi.dgempl.ec.europa.eu/namespaces/sbdh S_BUC_02-4.2-CaseOwner-Counterparty-Start-S073-4.2.xsd">
+    <sbdh:StandardBusinessDocumentHeader>
+        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+        <sbdh:Sender>
+            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">BE:0110</sbdh:Identifier>
+            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+        </sbdh:Sender>
+        <sbdh:Receiver>
+            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">DE:101575519</sbdh:Identifier>
+            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+        </sbdh:Receiver>
+        <sbdh:DocumentIdentification>
+            <sbdh:TypeVersion>4.2</sbdh:TypeVersion>
+            <sbdh:InstanceIdentifier>b1469917-46c0-4ce2-b9c6-0eb82a09d789</sbdh:InstanceIdentifier>
+            <sbdh:Type>S073</sbdh:Type>
+            <sbdh:CaseAction>Start</sbdh:CaseAction>
+            <sbdh:CreationDateAndTime>2020-10-15T13:13:51.0</sbdh:CreationDateAndTime>
+        </sbdh:DocumentIdentification>
+        <sbdh:BusinessScope>
+            <sbdh:CaseId>
+                <sbdh:InstanceIdentifier>c8ba8250-8452-4439-b772-15fb4f0056fd</sbdh:InstanceIdentifier>
+                <sbdh:BusinessServiceName>S_BUC_02:4.2</sbdh:BusinessServiceName>
+            </sbdh:CaseId>
+            <sbdh:SetId>f9c2ef09-6475-4977-b8d4-420e817c54a3</sbdh:SetId>
+            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+            <sbdh:PersonalProtectedCase>false</sbdh:PersonalProtectedCase>
+            <sbdh:TestCase>false</sbdh:TestCase>
+            <sbdh:LocalCaseData>LocalCaseData0</sbdh:LocalCaseData>
+        </sbdh:BusinessScope>
+    </sbdh:StandardBusinessDocumentHeader>
+    <sedS073:S073 sedPackage="sedPackage0" sedGVer="0" sedVer="0">
+        <Person>
+            <PersonIdentification>
+                <familyName>EESSI</familyName>
+                <forename>Berta</forename>
+                <dateBirth>1961-01-01</dateBirth>
+                <sex>
+                    <value>01</value>
+                </sex>
+                <familyNameAtBirth>familyNameAtBirth0</familyNameAtBirth>
+                <forenameAtBirth>forenameAtBirth0</forenameAtBirth>
+                <PINPersonInEachInstitution>
+                    <PersonalIdentificationNumber>
+                        <country>
+                            <value>AT</value>
+                        </country>
+                        <personalIdentificationNumber>personalIdentificationNumber0</personalIdentificationNumber>
+                    </PersonalIdentificationNumber>
+                    <PersonalIdentificationNumber>
+                        <country>
+                            <value>AT</value>
+                        </country>
+                        <personalIdentificationNumber>personalIdentificationNumber1</personalIdentificationNumber>
+                    </PersonalIdentificationNumber>
+                </PINPersonInEachInstitution>
+                <IfPINNotProvidedForEveryInstitutionPleaseProvide>
+                    <PlaceBirth>
+                        <town>town0</town>
+                        <country>
+                            <value>AT</value>
+                        </country>
+                    </PlaceBirth>
+                    <fatherFamilyNameAtBirth>fatherFamilyNameAtBirth0</fatherFamilyNameAtBirth>
+                    <forenameFather>forenameFather0</forenameFather>
+                    <motherFamilyNameAtBirth>motherFamilyNameAtBirth0</motherFamilyNameAtBirth>
+                    <forenameMother>forenameMother0</forenameMother>
+                </IfPINNotProvidedForEveryInstitutionPleaseProvide>
+            </PersonIdentification>
+            <AdditionalInformationPerson>
+                <nationality>
+                    <value>AT</value>
+                </nationality>
+            </AdditionalInformationPerson>
+        </Person>
+        <AddressOfPersonForWhomInformationRegistrationSent>
+            <Address>
+                <street>street0</street>
+                <buildingName>buildingName0</buildingName>
+                <town>town1</town>
+                <postalCode>postalCode0</postalCode>
+                <region>region0</region>
+                <country>
+                    <value>AT</value>
+                </country>
+            </Address>
+            <residenceInThisCountrySince>2006-05-04</residenceInThisCountrySince>
+        </AddressOfPersonForWhomInformationRegistrationSent>
+        <Status>
+            <status>
+                <value>01</value>
+            </status>
+        </Status>
+        <FillInIfStatusPersonFamilyMember>
+            <InsuredPerson>
+                <PersonIdentification>
+                    <familyName>familyName1</familyName>
+                    <forename>forename1</forename>
+                    <dateBirth>2006-05-04</dateBirth>
+                    <sex>
+                        <value>01</value>
+                    </sex>
+                    <familyNameAtBirth>familyNameAtBirth1</familyNameAtBirth>
+                    <forenameAtBirth>forenameAtBirth1</forenameAtBirth>
+                    <PINPersonInEachInstitution>
+                        <PersonalIdentificationNumber>
+                            <country>
+                                <value>AT</value>
+                            </country>
+                            <personalIdentificationNumber>personalIdentificationNumber2</personalIdentificationNumber>
+                        </PersonalIdentificationNumber>
+                        <PersonalIdentificationNumber>
+                            <country>
+                                <value>AT</value>
+                            </country>
+                            <personalIdentificationNumber>personalIdentificationNumber3</personalIdentificationNumber>
+                        </PersonalIdentificationNumber>
+                    </PINPersonInEachInstitution>
+                    <IfPINNotProvidedForEveryInstitutionPleaseProvide>
+                    </IfPINNotProvidedForEveryInstitutionPleaseProvide>
+                </PersonIdentification>
+                <AdditionalInformationPerson>
+                    <nationality>
+                        <value>AT</value>
+                    </nationality>
+                </AdditionalInformationPerson>
+            </InsuredPerson>
+            <AddressMainInsuredPerson>
+                <street>street1</street>
+                <buildingName>buildingName1</buildingName>
+                <town>town2</town>
+                <postalCode>postalCode1</postalCode>
+                <region>region1</region>
+                <country>
+                    <value>AT</value>
+                </country>
+            </AddressMainInsuredPerson>
+        </FillInIfStatusPersonFamilyMember>
+        <ConcernsDocument>
+            <typeDocument>
+                <value>01</value>
+            </typeDocument>
+            <issuedOn>2019-01-01</issuedOn>
+        </ConcernsDocument>
+        <Entitlement>
+            <entitlementDocument>
+                <value>01</value>
+            </entitlementDocument>
+            <issuedOn>2020-01-01</issuedOn>
+        </Entitlement>
+        <InformationRegistration>
+            <informationRegistration>
+                <value>01</value>
+            </informationRegistration>
+            <PeriodRegistration>
+                <RegistrationPeriod>
+<!--                    <FixedPeriod>
+                        <startDate>2006-05-04</startDate>
+                        <endDate>2006-05-04</endDate>
+                    </FixedPeriod>-->
+                    <OpenPeriod>
+                        <typeOpenPeriod>
+                            <value>01</value>
+                        </typeOpenPeriod>
+                        <startDate>2020-01-01</startDate>
+                    </OpenPeriod>
+                </RegistrationPeriod>
+            </PeriodRegistration>
+            <ReasonForRefusalRegistration>
+                <reason>
+                    <value>01</value>
+                </reason>
+<!--                <FillInIfReasonInsuredEmployed>
+                    <date>2006-05-04</date>
+                </FillInIfReasonInsuredEmployed>-->
+                <PleaseFillInFollowingIfReasonOtherReason>
+                    <otherReason>otherReason0</otherReason>
+                </PleaseFillInFollowingIfReasonOtherReason>
+            </ReasonForRefusalRegistration>
+        </InformationRegistration>
+        <ds:Signature Id="ID000">
+            <ds:SignedInfo Id="ID001">
+                <ds:CanonicalizationMethod Algorithm="http://www.oxygenxml.com/">
+                </ds:CanonicalizationMethod>
+                <ds:SignatureMethod Algorithm="http://www.oxygenxml.com/">
+                    <ds:HMACOutputLength>0</ds:HMACOutputLength>
+                </ds:SignatureMethod>
+                <ds:Reference Id="ID002" URI="http://www.oxygenxml.com/" Type="http://www.oxygenxml.com/">
+                    <ds:Transforms>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+<!--                            <ds:XPath>XPath0</ds:XPath>-->
+<!---->
+                            <ds:XPath>XPath1</ds:XPath>
+                        </ds:Transform>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+<!--                            <ds:XPath>XPath2</ds:XPath>-->
+<!---->
+                            <ds:XPath>XPath3</ds:XPath>
+                        </ds:Transform>
+                    </ds:Transforms>
+                    <ds:DigestMethod Algorithm="http://www.oxygenxml.com/">
+                    </ds:DigestMethod>
+                    <ds:DigestValue>ZGVmYXVsdA==</ds:DigestValue>
+                </ds:Reference>
+                <ds:Reference Id="ID003" URI="http://www.oxygenxml.com/" Type="http://www.oxygenxml.com/">
+                    <ds:Transforms>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+<!---->
+                            <ds:XPath>XPath4</ds:XPath>
+<!--                            <ds:XPath>XPath5</ds:XPath>-->
+                        </ds:Transform>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+<!---->
+                            <ds:XPath>XPath6</ds:XPath>
+<!--                            <ds:XPath>XPath7</ds:XPath>-->
+                        </ds:Transform>
+                    </ds:Transforms>
+                    <ds:DigestMethod Algorithm="http://www.oxygenxml.com/">
+                    </ds:DigestMethod>
+                    <ds:DigestValue>ZGVmYXVsdA==</ds:DigestValue>
+                </ds:Reference>
+            </ds:SignedInfo>
+            <ds:SignatureValue Id="ID004">ZGVmYXVsdA==</ds:SignatureValue>
+            <ds:KeyInfo Id="ID005">
+                <ds:KeyName>KeyName0</ds:KeyName>
+<!--                <ds:KeyValue>
+                    <ds:DSAKeyValue>
+                        <ds:P>ZGVmYXVsdA==</ds:P>
+                        <ds:Q>ZGVmYXVsdA==</ds:Q>
+                        <ds:Y>ZGVmYXVsdA==</ds:Y>
+                        <ds:Seed>ZGVmYXVsdA==</ds:Seed>
+                        <ds:PgenCounter>ZGVmYXVsdA==</ds:PgenCounter>
+                    </ds:DSAKeyValue>
+                </ds:KeyValue>-->
+<!--                <ds:RetrievalMethod URI="http://www.oxygenxml.com/" Type="http://www.oxygenxml.com/">
+                    <ds:Transforms>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+                            <ds:XPath>XPath8</ds:XPath>
+                        </ds:Transform>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+                            <ds:XPath>XPath9</ds:XPath>
+                        </ds:Transform>
+                    </ds:Transforms>
+                </ds:RetrievalMethod>-->
+<!--                <ds:X509Data>
+                    <ds:X509IssuerSerial>
+                        <ds:X509IssuerName>X509IssuerName0</ds:X509IssuerName>
+                        <ds:X509SerialNumber>0</ds:X509SerialNumber>
+                    </ds:X509IssuerSerial>
+                    <ds:X509Certificate>ZGVmYXVsdA==</ds:X509Certificate>
+                </ds:X509Data>-->
+<!--                <ds:PGPData>
+                    <ds:PGPKeyPacket>ZGVmYXVsdA==</ds:PGPKeyPacket>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion3</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion5</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                </ds:PGPData>-->
+<!--                <ds:SPKIData>
+                    <ds:SPKISexp>ZGVmYXVsdA==</ds:SPKISexp>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion7</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                    <ds:SPKISexp>ZGVmYXVsdA==</ds:SPKISexp>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion9</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                </ds:SPKIData>-->
+<!--                <ds:MgmtData>MgmtData0</ds:MgmtData>-->
+<!---->
+<!--                <ds:KeyName>KeyName1</ds:KeyName>-->
+<!--                <ds:KeyValue>
+                </ds:KeyValue>-->
+<!--                <ds:RetrievalMethod URI="http://www.oxygenxml.com/" Type="http://www.oxygenxml.com/">
+                    <ds:Transforms>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+                            <ds:XPath>XPath10</ds:XPath>
+                        </ds:Transform>
+                        <ds:Transform Algorithm="http://www.oxygenxml.com/">
+                            <ds:XPath>XPath11</ds:XPath>
+                        </ds:Transform>
+                    </ds:Transforms>
+                </ds:RetrievalMethod>-->
+<!--                <ds:X509Data>
+                    <ds:X509IssuerSerial>
+                        <ds:X509IssuerName>X509IssuerName1</ds:X509IssuerName>
+                        <ds:X509SerialNumber>0</ds:X509SerialNumber>
+                    </ds:X509IssuerSerial>
+                    <ds:X509IssuerSerial>
+                        <ds:X509IssuerName>X509IssuerName2</ds:X509IssuerName>
+                        <ds:X509SerialNumber>0</ds:X509SerialNumber>
+                    </ds:X509IssuerSerial>
+                </ds:X509Data>-->
+<!--                <ds:PGPData>
+                    <ds:PGPKeyID>ZGVmYXVsdA==</ds:PGPKeyID>
+                    <ds:PGPKeyPacket>ZGVmYXVsdA==</ds:PGPKeyPacket>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion11</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>TypeVersion13</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                </ds:PGPData>-->
+                <ds:SPKIData>
+                    <ds:SPKISexp>ZGVmYXVsdA==</ds:SPKISexp>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>4.2</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                    <ds:SPKISexp>ZGVmYXVsdA==</ds:SPKISexp>
+                    <sbdh:StandardBusinessDocumentHeader>
+                        <sbdh:HeaderVersion>1.1</sbdh:HeaderVersion>
+                        <sbdh:Sender>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>CaseOwner</sbdh:ContactTypeIdentifier>
+                        </sbdh:Sender>
+                        <sbdh:Receiver>
+                            <sbdh:Identifier Authority="urn:eu:europa:ec:dgempl:eessi:ir">AT:0000</sbdh:Identifier>
+                            <sbdh:ContactTypeIdentifier>Counterparty</sbdh:ContactTypeIdentifier>
+                        </sbdh:Receiver>
+                        <sbdh:DocumentIdentification>
+                            <sbdh:TypeVersion>4.2</sbdh:TypeVersion>
+                            <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                            <sbdh:Type>S073</sbdh:Type>
+                            <sbdh:CaseAction>Start</sbdh:CaseAction>
+                            <sbdh:CreationDateAndTime>2006-05-04T18:13:51.0</sbdh:CreationDateAndTime>
+                        </sbdh:DocumentIdentification>
+                        <sbdh:BusinessScope>
+                            <sbdh:CaseId>
+                                <sbdh:InstanceIdentifier>00000000-0000-0000-0000-000000000000</sbdh:InstanceIdentifier>
+                                <sbdh:BusinessServiceName>S_BUC_02:4a2</sbdh:BusinessServiceName>
+                            </sbdh:CaseId>
+                            <sbdh:SetId>00000000-0000-0000-0000-000000000000</sbdh:SetId>
+                            <sbdh:DocumentVersion>50</sbdh:DocumentVersion>
+                        </sbdh:BusinessScope>
+                    </sbdh:StandardBusinessDocumentHeader>
+                </ds:SPKIData>
+<!--                <ds:MgmtData>MgmtData1</ds:MgmtData>-->
+<!---->
+            </ds:KeyInfo>
+            <ds:Object Id="ID006" MimeType="MimeType0" Encoding="http://www.oxygenxml.com/">
+            </ds:Object>
+            <ds:Object Id="ID007" MimeType="MimeType1" Encoding="http://www.oxygenxml.com/">
+            </ds:Object>
+        </ds:Signature>
+    </sedS073:S073>
+</sbdh:StandardBusinessDocument>

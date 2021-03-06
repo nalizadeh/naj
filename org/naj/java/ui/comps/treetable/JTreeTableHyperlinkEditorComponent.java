@@ -60,7 +60,8 @@ public class JTreeTableHyperlinkEditorComponent extends JPanel implements JTreeT
 					if (JTreeTableHyperlinkEditorComponent.this.listener != null) {
 						JTreeTableHyperlinkEditorComponent.this.listener.nodeActionPerformed(
 							JTreeTableHyperlinkEditorComponent.this.name,
-							getEditorValue()
+							getEditorValue(),
+							label
 						);
 					}
 				}
@@ -70,8 +71,14 @@ public class JTreeTableHyperlinkEditorComponent extends JPanel implements JTreeT
 		add(label, BorderLayout.CENTER);
 	}
 
-	public void setListener(JTreeTableListener listener) {
-		this.listener = listener;
+	@Override
+	public Object getRendererValue() {
+		return value;
+	}
+
+	@Override
+	public void setRendererValue(Object value) {
+		label.setIcon(getIcon(value));
 	}
 
 	@Override
@@ -90,6 +97,7 @@ public class JTreeTableHyperlinkEditorComponent extends JPanel implements JTreeT
 	@Override
 	public void setEditorValue(Object value) {
 		this.value = value.toString();
+		label.setText(value.toString());
 	}
 
 	@Override
@@ -146,6 +154,11 @@ public class JTreeTableHyperlinkEditorComponent extends JPanel implements JTreeT
 	protected String getTooltips(Object value) {
 		return null;
 	}
+
+	public void setListener(JTreeTableListener listener) {
+		this.listener = listener;
+	}
+
 }
 
 /*--- Formatiert nach TK Code Konventionen vom 05.03.2002 ---*/

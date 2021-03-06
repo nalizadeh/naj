@@ -14,7 +14,7 @@ import org.naj.java.ui.Helper;
  */
 public class JTreeTableProperties {
 
-	protected static final int FONT_SIZE = 13;
+	public static final int FONT_SIZE = 13;
 
 	protected static final ImageIcon TT_MEN_ICON = Helper.getImage("headmenu.png");
 	protected static final ImageIcon TT_MEH_ICON = Helper.getImage("men.png");

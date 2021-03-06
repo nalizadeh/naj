@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2019 sp1 (x64) (http://www.altova.com) von DVKA (GkVSpitzenverband) bearbeitet -->
+<xsd:schema 
+	xmlns:CC="http://ec.europa.eu/eessi/ns/4_2/CC" 
+	xmlns:SSec="http://ec.europa.eu/eessi/ns/4_2/SSec" 
+	xmlns:ccts="urn:un:unece:uncefact:documentation:standard:CoreComponentsTechnicalSpecification:2" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:SSecNat="https://www.gkv-spitzenverband.de/3_0/SSecNat" 
+	targetNamespace="https://www.gkv-spitzenverband.de/3_0/SSecNat" 
+	elementFormDefault="unqualified" 
+	version="3.0.0"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	jaxb:version="2.0">
+
+	<xsd:annotation>
+		<xsd:appinfo>
+		   <jaxb:schemaBindings>
+				<jaxb:package name="de.tk.biz.comp.datenaustausch.eessi.xml.document.national.v04m00.common"/>
+			</jaxb:schemaBindings>
+		 </xsd:appinfo>
+	</xsd:annotation>
+
+	<xsd:import namespace="http://ec.europa.eu/eessi/ns/4_2/CC" schemaLocation="CC-4.2.xsd"/>
+	<xsd:complexType name="LiaisonBodyType">
+		<xsd:annotation>
+			<xsd:appinfo>Neu 4.0.17_2.0.0</xsd:appinfo>
+			<xsd:documentation xml:lang="de">
+				Typ der Verbindungsstelle.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value">
+				<xsd:annotation>
+					<xsd:appinfo>Änderung 3.0.0: NCM-11</xsd:appinfo>
+					<xsd:documentation xml:lang="de">
+						A
+						B
+						C
+						D
+						E
+						F
+						G
+						H
+						I
+						J
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="(A|B|C|D|E|F|G|H|I|J){1}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="NationalMarker">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">Nationale Kennzeichnung
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element name="DocumentFromForeignLiaisonBodyWasIncorrect" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de"> Dokument der
+						ausländischen Verbindungsstelle war fehlerhaft
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IndividualDocumentHasBeenContestedByLiaisonBody" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Dokument wurde von
+						DVKA beanstandet Kennzeichnung ist ausreichend, da Kopie zur
+						Verfügung gestellt wird
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReplyWasSentByLiaisonBody" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Wiedereinreichung
+						wurde von DVKA erstellt Kennzeichnung ist ausreichend, da Kopie
+						zur Verfügung gestellt wird
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CopyOfADocumentCausedByActionOfLiaisonBody" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">
+						Kopie eines
+						DVKA-Dokumentes
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CopyOfADocumentCausedByChangeOfCompetentInstitution" type="xsd:boolean" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Kopie eines
+						Dokumentes aufgrund IK-Wechsel
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="ForeignCurrencyPayment">
+		<xsd:sequence>
+			<xsd:element name="payment" type="CC:EESSIPaymentEUType"/>
+			<xsd:element name="amountEUR" type="CC:EESSIAmountType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Betrag in EUR
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ExchangeRate">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Wechselkurs in Bezug
+						auf 1 Euro
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:double">
+						<xsd:pattern value="[0-9]+\.[0-9]{1,6}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OtherRefusalCodeType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">Sonstiger
+				Ablehnungsgrund.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ContestationsRefusalCodeInfoOther" type="CC:EESSIVeryLongStringType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Bei bestimmten
+						Ablehnungscodes ist eine Beschreibung im Freitextformat
+						erforderlich. Dies sollte nur in Ausnahmefällen erfolgen.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MandatoryFieldEmptyType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">Ein oder mehrere
+				Pflichtfelder wurden nicht ausgefüllt.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="fieldName" type="CC:EESSILongStringType" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>Name des Pflichtfeldes</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ContestationRefusalDateType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="de">Ablehnungscode der
+				Beanstandung - Informationsdatum
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="contestationRefusalCodeInfoDate" type="CC:EESSIBusinessDateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Bei bestimmten
+						Ablehnungscodes ist zur Klarstellung die Angabe von Daten
+						erforderlich. Siehe S082.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CLA_IMO_ILP_ReferencesType">
+		<xsd:sequence>
+			<xsd:element name="OriginalGlobalReferenceSenderLiaisonBody" type="CC:EESSICRUniqueidentifierType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Zugehörige
+						Vorgangsnummer DVKA
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OriginalGlobalReferenceSenderInstitution" type="CC:EESSICRUniqueidentifierType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:appinfo>Änderung 3.0.0: NCM-51, NCM-54, NCM-73</xsd:appinfo>
+					<xsd:documentation xml:lang="de">Zugehörige
+						Vorgangsnummer Dt. Kasse
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OriginalIndividualNumberSenderLiaisonBody" type="CC:EESSICRUniqueidentifierType">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="de">Zugehörige KR-Nr.
+						DVKA
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OriginalIndividualNumberSenderInstitution" type="CC:EESSICRUniqueidentifierType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:appinfo>Änderung 3.0.0: NCM-51, NCM-54, NCM-73</xsd:appinfo>
+					<xsd:documentation xml:lang="de">Zugehörige RE-Nr. Dt.
+						Kasse
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="S051N_RefundReasonsType">
+		<xsd:annotation>
+			<xsd:appinfo>Neu 3.0.0 (NCM-76)</xsd:appinfo>
+			<xsd:documentation xml:lang="de">
+				<ccts:OfficialConstraintContextValue>
+					<CodeListEntry>
+						<value>01</value>
+						<definition>Person erhält eine Rente in ihrem Wohnstaat seit</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>02</value>
+						<definition>Betreffende/-r Familienangehörige/-r hat Anspruch auf Leistungen im Wohnstaat seit</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>03</value>
+						<definition>Vorheriger Anspruch im Wohnstaat seit</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>04</value>
+						<definition>Die Person ist verstorben am</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>05</value>
+						<definition>Der Anspruch endete am</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>06</value>
+						<definition>Betrag der Anzahlung war höher als Schlusszahlung</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>99</value>
+						<definition>Sonstiges [bitte Feld „Sonstiges“ ausfüllen]</definition>
+					</CodeListEntry>
+				</ccts:OfficialConstraintContextValue>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" minOccurs="1" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="(01|02|03|04|05|06|99){1}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SicknessContestationCodeType">
+		<xsd:annotation>
+			<xsd:appinfo>Neu 3.0.0: NCM-33</xsd:appinfo>
+			<xsd:documentation xml:lang="de">
+				<ccts:OfficialConstraintContextValue>
+					<CodeListEntry>
+						<value>01</value>
+						<definition>Dieses Dokument betrifft nicht uns</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>02</value>
+						<definition>Kennung des Trägers fehlerhaft. Bitte teilen Sie uns die richtige Kennung des Trägers mit.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>03</value>
+						<definition>Person kann anhand der zur Verfügung stehenden Informationen nicht identifiziert werden. Bitte prüfen.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>04</value>
+						<definition>Anspruchsbescheinigung unbekannt oder nicht gefunden. Bitte schicken Sie uns eine Kopie</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>05</value>
+						<definition>Es wird eine geplante Behandlung vermutet. Bitte um Überprüfung.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>06</value>
+						<definition>Es besteht eine Überschneidung bei den Krankenhausaufenthalten. Bitte passen Sie die Forderung an.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>07</value>
+						<definition>Die Person war im Leistungszeitraum nicht versichert. Bitte schicken Sie uns eine Kopie der Anspruchsbescheinigung.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>08</value>
+						<definition>Der Zeitraum der Gewährung von Sachleistungen fällt nicht in den Anspruchszeitraum.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>09</value>
+						<definition>Zeitraum der Gewährung von Sachleistungen fällt teilweise in den Anspruchszeitraum. Bitte passen Sie die Forderung an.</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>10</value>
+						<definition>Kosten sind auf Grundlage von Pauschalbeträgen zu begleichen ab [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>11</value>
+						<definition>Kosten sind auf Grundlage von Pauschalbeträgen zu begleichen bis [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>12</value>
+						<definition>Die betreffende Person ist nicht in der Anspruchsbescheinigung eingetragen</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>13</value>
+						<definition>Anspruchsbescheinigung ist nicht bestätigt</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>14</value>
+						<definition>Doppelte Rechnungsstellung [bitte Nummer der doppelten Rechnung eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>15</value>
+						<definition>Anspruchsbeginn im Wohnstaat am [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>16</value>
+						<definition>Leistungen scheinen sich auf einen Arbeitsunfall zu beziehen, der sich ereignete am [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>17</value>
+						<definition>Person verstorben am [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>18</value>
+						<definition>Fehlende Angaben zu den sonstigen Leistungen. Bitte ergänzen Sie Ihre Angaben</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>19</value>
+						<definition>Gesamtbetrag der Forderung entspricht nicht der Summe der Einzelforderungen</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>20</value>
+						<definition>Gesamtbetrag der Einzelforderung entspricht nicht der Summe der Leistungen</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>21</value>
+						<definition>Kosten der Leistungen wurden der versicherten Person vollständig oder teilweise erstattet</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>22</value>
+						<definition>Forderung nach Ablauf der Frist eingereicht [bitte Datum eintragen]</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>23</value>
+						<definition>Antwort auf Beanstandung nach Ablauf der Frist erhalten [bitte Datum eintragen].</definition>
+					</CodeListEntry>
+					<CodeListEntry>
+						<value>99</value>
+						<definition>sonstiger Grund</definition>
+					</CodeListEntry>
+				</ccts:OfficialConstraintContextValue>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value">
+				<xsd:annotation/>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:pattern value="(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99){1}"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

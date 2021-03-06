@@ -4,6 +4,7 @@ package org.naj.java.ui.comps.treetable;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,8 +30,11 @@ public class JTreeTableCellRenderer extends DefaultTableCellRenderer {
 		JTreeTable tt = (JTreeTable) table;
 		JTreeTableNode node = tt.getNodeAtRow(row);
 
-		Color fg = tt.getForeground();
-		Color bg = tt.getBackground();
+		Color fg = node.getForegroundColor(row, column);
+		Color bg = node.getBackgroundColor(row, column);		
+
+		if (fg == null) fg = tt.getForeground();
+		if (bg == null) bg = tt.getBackground();
 
 		JTreeTableProperties props = tt.getProperties();
 
@@ -100,9 +104,10 @@ public class JTreeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 
 		// Rest of columns
+		Font fo = node.getFont(row, column);
 		setForeground(fg);
 		setBackground(bg);
-		setFont(JTreeTableProperties.TT_FONT1);
+		setFont(fo == null ? JTreeTableProperties.TT_FONT1 : fo);
 		setHorizontalAlignment(node.getHorizontalAlignment(row, column));
 		setVerticalAlignment(node.getVerticalAlignment(row, column));
 

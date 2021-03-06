@@ -386,8 +386,8 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 		headerMenuButton.setBackground(JTreeTableProperties.H_BUTTON_BGC);
 		headerMenuButton.setOpaque(true);
 		headerMenuButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		headerMenuButton.addMouseListener(mouseAdapter);
 		headerMenuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		headerMenuButton.addMouseListener(mouseAdapter);
 
 		expandButton = new JButton(expandAction);
 		expandButton.setContentAreaFilled(false);
@@ -395,9 +395,9 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 		expandButton.setBackground(JTreeTableProperties.H_BUTTON_BGC);
 		expandButton.setOpaque(true);
 		expandButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		expandButton.addMouseListener(mouseAdapter);
-		expandButton.setEnabled(false);
 		expandButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		expandButton.setEnabled(false);
+		expandButton.addMouseListener(mouseAdapter);
 
 		collapseButton = new JButton(collapseAction);
 		collapseButton.setContentAreaFilled(false);
@@ -405,11 +405,24 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 		collapseButton.setBackground(JTreeTableProperties.H_BUTTON_BGC);
 		collapseButton.setOpaque(true);
 		collapseButton.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-		collapseButton.addMouseListener(mouseAdapter);
-		collapseButton.setEnabled(false);
 		collapseButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		collapseButton.setEnabled(false);
+		collapseButton.addMouseListener(mouseAdapter);
 
 		contextMenu = new JTreeTableContextMenu(this);
+	}
+
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public void init() {
+		init((JTreeTableNode) null);
 	}
 
 	/**
@@ -437,7 +450,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 	 */
 	public void init(JTreeTableNode root) {
 		tree.init(root);
-		postUpdate(root == null ? 0 : root.getChilds().size(), model.columnNames.length);
+		postUpdate(root == null || !root.hasChild() ? 0 : root.getChildren().size(), model.columnNames.length);
 	}
 
 	/**
@@ -465,7 +478,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 	 */
 	public void update(JTreeTableNode root, boolean setRoot) {
 		tree.update(root, setRoot);
-		postUpdate(root == null ? 0 : root.getChilds().size(), model.columnNames.length);
+		postUpdate(root == null ? 0 : root.hasChild() ? root.getChildren().size() : 0, model.columnNames.length);
 	}
 
 	/**
@@ -1474,18 +1487,39 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 	 * @see
 	 */
 	public int search(String text) {
+		return search(text, true);
+	}
+	
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public int search(String text, boolean caseSensitive) {
+		return searchNodes(text, caseSensitive).size();
+	}
+	
+	/**
+	 * @param
+	 *
+	 * @exception
+	 *
+	 * @return
+	 *
+	 * @see
+	 */
+	public List<JTreeTableNode> searchNodes(String text, boolean caseSensitive) {
+		List<JTreeTableNode> rows = new ArrayList<>();
 		if (text != null && !text.isEmpty()) {
-
-			List<JTreeTableNode> rows = new ArrayList<JTreeTableNode>();
-
-			tree.search(text, rows);
+			tree.search(text, rows, caseSensitive);
 			tree.select(rows);
-
 			scrollSelectionToVisible();
-
-			return rows.size();
 		}
-		return 0;
+		return rows;
 	}
 
 	/**
@@ -1568,9 +1602,9 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 	 *
 	 * @see
 	 */
-	public void nodeActionPerformed(String name, Object args) {
+	public void nodeActionPerformed(String name, Object args, Component comp) {
 		for (JTreeTableListener ls : treeTablelisteners) {
-			ls.nodeActionPerformed(name, args);
+			ls.nodeActionPerformed(name, args, comp);
 		}
 	}
 
@@ -1641,8 +1675,10 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 				filters.add(key.toString());
 			}
 		}
-		for (JTreeTableNode child : node.getChilds()) {
-			getFilterNodes(child, column, filters);
+		if (node.hasChild()) {
+			for (JTreeTableNode child : node.getChildren()) {
+				getFilterNodes(child, column, filters);
+			}
 		}
 	}
 
@@ -1714,7 +1750,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 						}
 					} else if (node.isChecked()) {
 						btOk.setEnabled(true);
-					} else if (self.tree.getCheckedCount() > 0) {
+					} else if (self.getCheckedCount() > 0) {
 						btOk.setEnabled(true);
 					}
 				}
@@ -1913,6 +1949,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 		btOk.setBounds(198, 345, 93, 26);
 
 		panel.setPreferredSize(new Dimension(MENU_WIDTH - 4, MENU_HEIGHT - 4));
+		panel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 		popup =
 			new JPopup() {
@@ -1924,7 +1961,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 				}
 			};
 
-		popup.open(comp, panel, x, y, MENU_WIDTH, MENU_HEIGHT);
+		popup.open(comp, panel, x, y);
 	}
 
 	/**
@@ -2022,6 +2059,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 		p2.add(p1, BorderLayout.SOUTH);
 
 		p2.setPreferredSize(new Dimension(200, 286));
+		p2.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 		popup =
 			new JPopup() {
@@ -2030,7 +2068,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 				}
 			};
 
-		popup.open(comp, p2, 10, 10, 200, 286);
+		popup.open(comp, p2, 10, 10);
 	}
 
 	//=====================================================================
@@ -2082,7 +2120,7 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 			new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					copySelectedData(table);
+					copySelectedData(table, -1, -1);
 				}
 			}
 		);
@@ -2113,37 +2151,43 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 
 	/**
 	 * @param   table
+	 * @param   row
+	 * @param   col
 	 *
 	 * @return  StringBuffer
 	 */
-	protected static void copySelectedData(JTable table) {
+	protected void copySelectedData(JTable table, int row, int col) {
 
 		StringBuffer sbf = new StringBuffer();
 
 		try {
-			int numcols = table.getSelectedColumnCount();
-			int numrows = table.getSelectedRowCount();
-			int[] rowsselected = table.getSelectedRows();
-			int[] colsselected = table.getSelectedColumns();
-
-			if (!table.getColumnModel().getColumnSelectionAllowed()) {
-				numcols = table.getColumnCount();
-				colsselected = new int[numcols];
-				for (int n = 0; n < table.getColumnCount(); n++) {
-					colsselected[n] = n;
-				}
+			if (row != -1 && col != -1) {
+				sbf.append(table.getValueAt(row, col));				
 			}
-
-			for (int i = 0; i < numrows; i++) {
-				for (int j = 0; j < numcols; j++) {
-					sbf.append(table.getValueAt(rowsselected[i], colsselected[j]));
-					if (j < numcols - 1) {
-						sbf.append("\t");
+			else {
+				int numcols = table.getSelectedColumnCount();
+				int numrows = table.getSelectedRowCount();
+				int[] rowsselected = table.getSelectedRows();
+				int[] colsselected = table.getSelectedColumns();
+	
+				if (!table.getColumnModel().getColumnSelectionAllowed()) {
+					numcols = table.getColumnCount();
+					colsselected = new int[numcols];
+					for (int n = 0; n < table.getColumnCount(); n++) {
+						colsselected[n] = n;
 					}
 				}
-				sbf.append("\n");
+	
+				for (int i = 0; i < numrows; i++) {
+					for (int j = 0; j < numcols; j++) {
+						sbf.append(table.getValueAt(rowsselected[i], colsselected[j]));
+						if (j < numcols - 1) {
+							sbf.append("\t");
+						}
+					}
+					sbf.append("\n");
+				}
 			}
-
 			StringSelection stsel = new StringSelection(sbf.toString());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stsel, stsel);
 
@@ -2154,12 +2198,10 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 
 	/**
 	 * @param  table
-	 * @param  data
+	 * @param  row
+	 * @param  col
 	 */
-	protected static void pasteSelectedData(JTable table) {
-
-		int startRow = (table.getSelectedRows())[0];
-		int startCol = table.getColumnModel().getColumnSelectionAllowed() ? (table.getSelectedColumns())[0] : 0;
+	protected void pasteSelectedData(JTable table, int row, int col) {
 		try {
 			String data =
 				(String) (
@@ -2169,14 +2211,23 @@ public class JTreeTable extends JTable implements TreeExpansionListener {
 						.getContents(table)
 						.getTransferData(DataFlavor.stringFlavor)
 				);
-			StringTokenizer st1 = new StringTokenizer(data, "\n");
-			for (int i = 0; st1.hasMoreTokens(); i++) {
-				String rowstring = st1.nextToken();
-				StringTokenizer st2 = new StringTokenizer(rowstring, "\t");
-				for (int j = 0; st2.hasMoreTokens(); j++) {
-					String value = (String) st2.nextToken();
-					if (startRow + i < table.getRowCount() && startCol + j < table.getColumnCount()) {
-						table.setValueAt(value, startRow + i, startCol + j);
+			if (row != -1 && col != -1) {
+				System.out.println(data);
+				table.setValueAt(data, row, col); // TODO
+			}
+			else {
+				int startRow = (table.getSelectedRows())[0];
+				int startCol = table.getColumnModel().getColumnSelectionAllowed() ? (table.getSelectedColumns())[0] : 0;
+	
+				StringTokenizer st1 = new StringTokenizer(data, "\n");
+				for (int i = 0; st1.hasMoreTokens(); i++) {
+					String rowstring = st1.nextToken();
+					StringTokenizer st2 = new StringTokenizer(rowstring, "\t");
+					for (int j = 0; st2.hasMoreTokens(); j++) {
+						String value = (String) st2.nextToken();
+						if (startRow + i < table.getRowCount() && startCol + j < table.getColumnCount()) {
+							table.setValueAt(value, startRow + i, startCol + j); // // TODO
+						}
 					}
 				}
 			}

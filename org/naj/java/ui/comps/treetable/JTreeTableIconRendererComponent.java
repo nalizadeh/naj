@@ -52,6 +52,16 @@ public class JTreeTableIconRendererComponent extends JPanel implements JTreeTabl
 	}
 
 	@Override
+	public Object getRendererValue() {
+		return null;
+	}
+
+	@Override
+	public void setRendererValue(Object value) {
+		label.setIcon(getIcon(value));
+	}
+
+	@Override
 	public Component getRendererComponent(
 		Component parent,
 		Object    value,
